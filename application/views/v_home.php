@@ -74,30 +74,29 @@
         <div class="row my-4">
             <div class="col-lg-12 text-center" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
                 <h2>Peta</h2>
-                <div id="legend" class="leaflet-control">
-        </div>
             </div>
         </div>
-        <div class="col-md-4 form-group mb-3">
+        <div class="row">
+        <div class="col-md-3 form-group mb-3">
             <select id="kodeKabFilter" class="form-select">
                 <option value="">Semua Kabupaten</option>
                 <!-- Tambahkan pilihan berdasarkan kode_kab yang ada di database -->
-                <option value="1">Kotawaringin Timur</option>
-                <option value="2">Lamandau</option>
-                <option value="3">Kotawaringin Barat</option>
-                <option value="4">Barito Selatan</option>
-                <option value="5">Barito Timur</option>
-                <option value="6">Barito Utara</option>
-                <option value="7">Gunung Mas</option>
-                <option value="8">Kapuas</option>
-                <option value="9">Katingan</option>
-                <option value="10">Murung Raya</option>
-                <option value="11">Pulang Pisau</option>
-                <option value="12">Sukamara</option>
-                <option value="13">Seruyan</option>
-                <option value="14">Kota Palangkaraya</option>
+                <?php foreach($kab as $data): ?>
+                    <option value="<?= $data->kode_kab ?>"><?= $data->nama_kab ?></option>
+                <?php endforeach; ?>
                 <!-- ... tambahkan pilihan lainnya sesuai kebutuhan -->
             </select>
+        </div>
+        <div class="col-md-3 form-group mb-3">
+            <select id="kodeKecFilter" name="kodeKecFilter" class="form-select" disabled>
+                <option value="">-- Pilih Kecamatan --</option>
+            </select>
+        </div>
+        <div class="col-md-3 form-group mb-3">
+            <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
+                <option value="">-- Pilih Kelurahan --</option>
+            </select>
+        </div>
         </div>
         <div id="map"></div>
 </div>

@@ -21,21 +21,23 @@
                                     <label>Kabupaten</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="choices form-select" name="kode_kab" required>
-                                        <option value="1">Kotawaringin Timur</option>
-                                        <option value="2">Lamandau</option>
-                                        <option value="3">Kotawaringin Barat</option>
-                                        <option value="4">Barito Selatan</option>
-                                        <option value="5">Barito Timur</option>
-                                        <option value="6">Barito Utara</option>
-                                        <option value="7">Gunung Mas</option>
-                                        <option value="8">Kapuas</option>
-                                        <option value="9">Katingan</option>
-                                        <option value="10">Murung Raya</option>
-                                        <option value="11">Pulang Pisau</option>
-                                        <option value="12">Sukamara</option>
-                                        <option value="13">Seruyan</option>
-                                        <option value="14">Kota Palangkaraya</option>
+                                    <select class="choices form-select" id="kabupaten" name="kode_kab" required>
+                                        <option value="">Pilih Kabupaten</option>
+                                        <?php foreach($kab as $k): ?>
+                                            <option value="<?= $k->kode_kab ?>"><?= $k->nama_kab ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label>Kecamatan</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <select class="choices form-select" id="kecamatan" name="kode_kec" required>
+                                        <option value="">Pilih Kecamatan</option>
+                                        <!-- <?php foreach($kec as $k): ?>
+                                            <option value="<?= $k->kode_kec ?>"><?= $k->nama_kec ?></option>
+                                        <?php endforeach; ?> -->
                                     </select>
                                 </div>
                                 
@@ -43,10 +45,11 @@
                                     <label>Kelurahan</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="choices form-select" name="kode_kel" required>
-                                        <option value="1">Mentawa Baru Ketapang</option>
-                                        <option value="2">Baamang Barat</option>
-                                        <option value="3">Baamang Baru</option>
+                                    <select class="choices form-select" id="kelurahan" name="kode_kel" required>
+                                        <option value="">Pilih Kelurahan</option>
+                                        <!-- <?php foreach($kel as $k): ?>
+                                            <option value="<?= $k->kode_kel ?>"><?= $k->nama_kel ?></option>
+                                        <?php endforeach; ?> -->
                                     </select>
                                 </div>
 
@@ -102,5 +105,6 @@
     </div>
     <div class="col-md-6">
         <div id="map"></div>
+        <!-- <div class="btn my-2 dariSini btn-danger">Ambil titik</div> -->
     </div>
 </div>

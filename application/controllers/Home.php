@@ -8,6 +8,9 @@ class Home extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model("M_tps");
+		$this->load->model("M_kab");
+		$this->load->model("M_kec");
+		$this->load->model("M_kel");
 	}
 
 
@@ -19,8 +22,11 @@ class Home extends CI_Controller {
             'user' => 'Putra Nugraha',
             'isi'   =>  'v_home',
             'map' => $this->M_tps->allData(),
+            'kab' => $this->M_kab->allData(),
+            'kec' => $this->M_kec->allData(),
+            'kel' => $this->M_kel->allData(),
         );
-        // var_dump($data);
+        // var_dump($data['kab']);
         $this->load->view('layout/v_wrapper', $data, FALSE);
     }
 

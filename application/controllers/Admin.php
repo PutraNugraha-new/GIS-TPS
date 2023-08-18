@@ -8,6 +8,9 @@ class Admin extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model("M_tps");
+		$this->load->model("M_kab");
+		$this->load->model("M_kel");
+		$this->load->model("M_kec");
 	}
 
     public function index()
@@ -18,9 +21,22 @@ class Admin extends CI_Controller {
             'user' => 'Putra Nugraha',
             'isi'   =>  'admin/v_home',
             'map' => $this->M_tps->allData(),
+            'kel' => $this->M_kel->allData(),
+            'kab' => $this->M_kab->allData(),
+            'kec' => $this->M_kec->allData()
         );
         // var_dump($data);
         $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+    }
+
+    public function get_kecamatan_by_kabupaten($id_kabupaten) {
+        $data = $this->M_tps->get_kecamatan_by_kabupaten($id_kabupaten);
+        echo json_encode($data);
+    }
+    
+    public function get_kelurahan_by_kecamatan($id_kecamatan) {
+        $data = $this->M_tps->get_kelurahan_by_kecamatan($id_kecamatan);
+        echo json_encode($data);
     }
 
     public function add()
@@ -29,6 +45,7 @@ class Admin extends CI_Controller {
             $data = array(
                 'nama_tps'	=> $i->post('nama_tps'),
                 'kode_kab'	=> $i->post('kode_kab'),
+                'kode_kec'	=> $i->post('kode_kec'),
                 'kode_kel'	=> $i->post('kode_kel'),
                 'alamat'			=> $i->post('alamat'),
                 'longitude'			=> $i->post('longitude'),

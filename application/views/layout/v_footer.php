@@ -94,8 +94,11 @@
                 iconSize: [15]
             });
 
-            var lokasi = L.marker([<?= $data->latitude ?>, <?= $data->longitude ?>], {icon: customIcon})
-                .bindPopup('TPS <?= $data->nama_tps ?> <br> Kelurahan <?= $data->kode_kel ?> <br> <a href="<?= base_url() ?>/home/detail/<?= $data->id_tps ?>" class="btn btn-warning">Detail</a> ');
+            var lokasi = L.marker([<?= $data->latitude ?>, <?= $data->longitude ?>], {
+                icon: customIcon,
+                kode_kel: '<?= $data->kode_kel ?>'
+            })
+                .bindPopup('TPS <?= $data->nama_tps ?> <br> Kelurahan <?= $data->nama_kel ?> <br> <a href="<?= base_url() ?>/home/detail/<?= $data->id_tps ?>" class="btn btn-warning">Detail</a> ');
 
             // Kelompokkan marker berdasarkan 'kode_kab'
             if (!markers.hasOwnProperty(kodeKab)) {
@@ -129,6 +132,15 @@
     document.getElementById('kodeKabFilter').addEventListener('change', function() {
         var selectedKodeKab = this.value;
 
+         // Enable or disable kecamatan and kelurahan select forms based on kabupaten selection
+        if (selectedKodeKab === '') {
+            $("#kodeKecFilter").prop('disabled', true);
+            $("#kodeKelFilter").prop('disabled', true);
+        } else {
+            $("#kodeKecFilter").prop('disabled', false);
+            $("#kodeKelFilter").prop('disabled', true);
+        }
+
         for (var kodeKab in markers) {
             if (selectedKodeKab === '' || selectedKodeKab === kodeKab) {
                 if (map.getZoom() > 7) {
@@ -143,7 +155,85 @@
         }
     });
 
+        // form select kecamatan
+        $("#kodeKabFilter").change(function() {
+            var id_kabupaten = $(this).val();
+            $("#kodeKecFilter").empty();
+            $("#kodeKelFilter").empty();
+
+            $.ajax({
+                url: "Admin/get_kecamatan_by_kabupaten/" + id_kabupaten,
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    // Loop untuk menambahkan opsi Kecamatan
+                    for (var i = 0; i < data.length; i++) {
+                        $("#kodeKecFilter").append('<option value="' + data[i].kode_kec + '">' + data[i].nama_kec + '</option>');
+                    }
+                }
+            });
+        });
+
+        // form select kelurahan
+        $("#kodeKecFilter").change(function() {
+            var id_kecamatan = $(this).val();
+            $("#kodeKelFilter").empty();
+            $("#kodeKelFilter").prop('disabled', false);
+
+            $.ajax({
+                url: "Admin/get_kelurahan_by_kecamatan/" + id_kecamatan,
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    // Loop untuk menambahkan opsi Kelurahan
+                    for (var i = 0; i < data.length; i++) {
+                        $("#kodeKelFilter").append('<option value="' + data[i].kode_kel + '">' + data[i].nama_kel + '</option>');
+                    }
+                }
+            });
+        });
+
+        // Tambahkan event listener untuk perubahan pilihan filter kelurahan
+    $("#kodeKelFilter").change(function() {
+        var id_kelurahan = $(this).val();
+
+        // Hapus semua marker individu yang ada pada peta
+        map.eachLayer(function(layer) {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Tampung marker yang sesuai dengan filter kelurahan
+        var filteredMarkers = [];
+
+        // Loop melalui data untuk menampilkan marker individu berdasarkan filter kelurahan
+        for (var kodeKab in markers) {
+            var markerGroup = markers[kodeKab].singleMarkers;
+            markerGroup.eachLayer(function(marker) {
+                var kelurahanKode = marker.options.kode_kel;
+                if (id_kelurahan === '' || id_kelurahan === kelurahanKode) {
+                    filteredMarkers.push(marker);
+                }
+            });
+        }
+
+        // Tambahkan marker yang sesuai kembali ke peta
+        for (var i = 0; i < filteredMarkers.length; i++) {
+            map.addLayer(filteredMarkers[i]);
+        }
+
+        // Lakukan zoom ke lokasi marker yang ada dengan filter kelurahan yang dipilih
+        if (filteredMarkers.length > 0) {
+            var bounds = new L.LatLngBounds(filteredMarkers.map(function(marker) {
+                return marker.getLatLng();
+            }));
+            map.fitBounds(bounds);
+        }
+    });
+
 </script>
+
 
 <script>
     var lat = '<?= $detail->latitude ?>'
@@ -228,24 +318,24 @@
 
         // Fungsi untuk menentukan rute dari titik awal ke tujuanMarker
         function routeFromCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var currentLatLng = [position.coords.latitude, position.coords.longitude];
-            var tujuanLatLng = tujuanMarker.getLatLng(); // Ganti 'tujuanMarker' dengan variabel yang sesuai
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var currentLatLng = [position.coords.latitude, position.coords.longitude];
+                    var tujuanLatLng = tujuanMarker.getLatLng(); // Ganti 'tujuanMarker' dengan variabel yang sesuai
 
-            // Mengganti titik awal dengan titik geolokasi saat ini
-            control.spliceWaypoints(0, 1, currentLatLng);
+                    // Mengganti titik awal dengan titik geolokasi saat ini
+                    control.spliceWaypoints(0, 1, currentLatLng);
 
-            // Mengganti titik tujuan dengan tujuanMarker
-            control.spliceWaypoints(1, 1, tujuanLatLng);
+                    // Mengganti titik tujuan dengan tujuanMarker
+                    control.spliceWaypoints(1, 1, tujuanLatLng);
 
-            // Fokus peta pada lokasi pengguna (titik awal)
-            map.setView(currentLatLng, 18); // Ganti 'zoomLevel' dengan level zoom yang diinginkan
-        });
-    } else {
-        console.error("Geolocation is not supported by this browser.");
-    }
-}
+                    // Fokus peta pada lokasi pengguna (titik awal)
+                    map.setView(currentLatLng, 18); // Ganti 'zoomLevel' dengan level zoom yang diinginkan
+                });
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        }
 
         $(document).on("click", ".dariSini", function(){
             routeFromCurrentLocation();

@@ -6,8 +6,9 @@
             </div>
         </div>
         <div class="row d-flex justify-content-md-between text-center text-md-start">
-            <div class="col-md-5 col-12">
-                Kabupaten <?= $detail->kode_kab ?> / Kecamatan / Kelurahan <?= $detail->kode_kel ?>
+            <div class="col-md-5 col-12"> <strong>
+                <?= $detail->nama_kab ?> / <?= $detail->nama_kec ?> / <?= $detail->nama_kel ?>
+            </strong>
             </div>
             <div class="col-md-3 col-12 text-center my-2">
                 <h4>TPS <?= $detail->nama_tps ?></h4>
