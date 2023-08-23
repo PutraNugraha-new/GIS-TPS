@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <h3>SILOKAT</h3>
-                <P>Dengan SILOKAT, pemilihan umum atau pemilihan lainnya tidak perlu lagi membingungkan. Aplikasi ini menjadi sahabat setia pengguna dalam menavigasi dunia TPS, memberikan kemudahan, keakuratan, dan kenyamanan dalam mencari dan mengunjungi lokasi TPS.</P>
+                <P>Dengan SILOKAT, pemilih tidak perlu lagi bingung. Aplikasi ini menjadi sahabat setia pengguna dalam menavigasi dunia TPS, memberikan kemudahan, keakuratan, dan kenyamanan dalam mencari dan mengunjungi lokasi TPS.</P>
             </div>
             <div class="col-lg-6">
                 <!-- <h3>Contact</h3> -->
@@ -41,7 +41,44 @@
 <script src="<?= base_url() ?>/assets/user/js/Control.Geocoder.js"></script>
 <!-- <script src="<?= base_url() ?>/assets/js/leaftlet-user.js"></script>     -->
 
-<script>
+<script>   
+    function formatCoordinates(latitude, longitude) {
+    // Pengecekan apakah koordinat sudah dalam format yang benar
+    const validLatitudePattern = /^-?\d+\.\d+$/;
+    const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
+
+    if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
+        return {
+            formattedLatitude: latitude,
+            formattedLongitude: longitude
+        };
+    }
+
+    // Jika koordinat perlu diformat
+    const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
+    const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
+
+    let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
+    let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
+
+    // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
+    if (!validLatitudePattern.test(formattedLatitude)) {
+        formattedLatitude = latitude;
+    }
+
+    if (!validLongitudePattern.test(formattedLongitude)) {
+        formattedLongitude = longitude;
+    }
+
+    return {
+        formattedLatitude,
+        formattedLongitude
+    };
+}
+
+
+
+
     var latLng = [-1.5333, 113.7500];
     var map = L.map('map').setView(latLng, 7);
     layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -87,18 +124,41 @@
             var kodeKab = '<?= $data->kode_kab ?>';
             var kabIconUrl = '<?= base_url() ?>/assets/user/image/' + kodeKab + '.png'; // Sesuaikan dengan path ikon kabupaten
 
+            var latitude = "<?= $data->latitude ?>"
+            var longitude = "<?= $data->longitude ?>"
+            var formattedCoordinates = formatCoordinates(latitude, longitude);
+
+            var formattedLatitude = parseFloat(formattedCoordinates.formattedLatitude); // Konversi ke angka
+            var formattedLongitude = parseFloat(formattedCoordinates.formattedLongitude);
+            
             // Buat penanda seperti sebelumnya
             var customIcon = L.divIcon({
                 className: 'custom-icon',
                 html: '<div class="icon-container"><span class="icon-number">' + tpsNumber + '</span></div>',
                 iconSize: [15]
             });
+            var data = {
+                nama_tps: " <?= $data->nama_tps ?>",
+                nama_kel: "<?= $data->nama_kel ?>",
+                alamat: "<?= $data->alamat ?>",
+                latitude: formattedLatitude,
+                longitude: formattedLongitude
+            };
+            var popupContent = `
+                <strong> TPS ${data.nama_tps}</strong>
+                <br>
+                <strong> Kelurahan</strong> ${data.nama_kel}
+                <br>
+                <strong> Alamat</strong> ${data.alamat}
+                <br>
+                <a href="https://www.google.com/maps/search/?api=1&query=${data.latitude},${data.longitude}" target="_blank">Jelajahi TPS</a>`;
 
-            var lokasi = L.marker([<?= $data->latitude ?>, <?= $data->longitude ?>], {
+            var lokasi = L.marker([formattedLatitude, formattedLongitude], {
                 icon: customIcon,
                 kode_kel: '<?= $data->kode_kel ?>'
-            })
-                .bindPopup('TPS <?= $data->nama_tps ?> <br> Kelurahan <?= $data->nama_kel ?> <br> <a href="<?= base_url() ?>/home/detail/<?= $data->id_tps ?>" class="btn btn-warning">Detail</a> ');
+            }).bindPopup(popupContent);
+
+                
 
             // Kelompokkan marker berdasarkan 'kode_kab'
             if (!markers.hasOwnProperty(kodeKab)) {
@@ -235,10 +295,10 @@
 </script>
 
 
-<script>
+<!-- <script>
     var lat = '<?= $detail->latitude ?>'
     var long = '<?= $detail->longitude ?>'
-    var latLng = [lat, long];
+    let latLong = [lat, long];
     let centerMap = false;
     var map = L.map('detail-map').setView(latLng, 15);
     // var geocodeService = L.esri.Geocoding.geocodeService();
@@ -286,7 +346,7 @@
     // routing machine
     var control = L.Routing.control({
             waypoints: [
-                latLng
+                latLong
             ],
             geocoder: L.Control.Geocoder.nominatim(),
             routeWhileDragging :true,
@@ -340,7 +400,7 @@
         $(document).on("click", ".dariSini", function(){
             routeFromCurrentLocation();
         });
-</script>
+</script> -->
 
 </body>
 </html>

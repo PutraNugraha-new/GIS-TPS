@@ -26,7 +26,7 @@ class Home extends CI_Controller {
             'kec' => $this->M_kec->allData(),
             'kel' => $this->M_kel->allData(),
         );
-        // var_dump($data['kab']);
+        // var_dump($data['map']);
         $this->load->view('layout/v_wrapper', $data, FALSE);
     }
 

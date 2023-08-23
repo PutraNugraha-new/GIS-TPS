@@ -1,7 +1,7 @@
 <div class="row header" id="header">
     <div class="col-12">
         <nav class="navbar navbar-expand-lg gap-4 w-100 container">
-                <img src="<?= base_url() ?>assets/user/image/kpu.png" alt="Logo" class="d-inline-block align-text-top">
+                <img src="<?= base_url() ?>assets/user/image/kpu1.png" alt="Logo" class="d-inline-block align-text-top img-fluid" width="200">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

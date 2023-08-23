@@ -40,6 +40,11 @@ class M_tps extends CI_Model {
     public function get_kelurahan_by_kecamatan($id_kecamatan) {
         return $this->db->where('kode_kec', $id_kecamatan)->get('kelurahan')->result_array();
     }
+
+    public function hitungDataByKodeKab($kodeKab) {
+        $this->db->where('kode_kab', $kodeKab);
+        return $this->db->count_all_results('tps'); // Ganti 'nama_tabel' dengan nama tabel yang sesuai
+    }
     
 }
 

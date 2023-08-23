@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <input type="text" id="longitude" class="form-control" name="longitude"
-                                        placeholder="Longitude" required>
+                                        placeholder="Longitude" required >
                                 </div>
 
                                 <div class="col-md-4">
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <input type="text" id="latitude" class="form-control" name="latitude"
-                                        placeholder="Latitude" required>
+                                        placeholder="Latitude" required >
                                 </div>
 
                                 <div class="col-md-4">

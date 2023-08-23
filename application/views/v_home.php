@@ -77,26 +77,37 @@
             </div>
         </div>
         <div class="row">
-        <div class="col-md-3 form-group mb-3">
-            <select id="kodeKabFilter" class="form-select">
-                <option value="">Semua Kabupaten</option>
-                <!-- Tambahkan pilihan berdasarkan kode_kab yang ada di database -->
-                <?php foreach($kab as $data): ?>
-                    <option value="<?= $data->kode_kab ?>"><?= $data->nama_kab ?></option>
-                <?php endforeach; ?>
-                <!-- ... tambahkan pilihan lainnya sesuai kebutuhan -->
-            </select>
+            <div class="col-md-1">
+                <h4 class="text-secondary">Filter :</h4>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKabFilter" class="form-select">
+                    <option value="">Semua Kabupaten</option>
+                    <!-- Tambahkan pilihan berdasarkan kode_kab yang ada di database -->
+                    <?php foreach($kab as $data): ?>
+                        <option value="<?= $data->kode_kab ?>"><?= $data->nama_kab ?></option>
+                    <?php endforeach; ?>
+                    <!-- ... tambahkan pilihan lainnya sesuai kebutuhan -->
+                </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKecFilter" name="kodeKecFilter" class="form-select" disabled>
+                    <option value="">-- Pilih Kecamatan --</option>
+                </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
+                    <option value="">-- Pilih Kelurahan --</option>
+                </select>
+            </div>
         </div>
-        <div class="col-md-3 form-group mb-3">
-            <select id="kodeKecFilter" name="kodeKecFilter" class="form-select" disabled>
-                <option value="">-- Pilih Kecamatan --</option>
-            </select>
-        </div>
-        <div class="col-md-3 form-group mb-3">
-            <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
-                <option value="">-- Pilih Kelurahan --</option>
-            </select>
-        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-danger">
+                    <strong>*</strong>Jika tidak tau dimana anda mencoblos, silahkan cek data anda di
+                    <a href="https://cekdptonline.kpu.go.id/" target="_blank" class="text-decoration-none"><strong>Sini</strong></a>
+                </p>
+            </div>
         </div>
         <div id="map"></div>
 </div>
@@ -117,7 +128,7 @@
         <div class="row d-flex justify-content-center w-100 my-2" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
             <div class="col-lg-7 text-center desk-about">
                 <p>
-                    SILOKAT adalah sebuah sistem informasi inovatif yang dirancang untuk memberikan pengguna informasi yang lengkap dan akurat mengenai lokasi Tempat Pemungutan Suara (TPS) melalui peta interaktif. Dengan menggunakan aplikasi ini, pengguna dapat dengan mudah menemukan TPS yang mereka butuhkan untuk melakukan hak pilih secara efisien.
+                    SILOKAT atau Sistem Informasi Lokasi TPS adalah sebuah sistem informasi inovatif yang dirancang untuk memberikan pengguna informasi yang lengkap dan akurat mengenai lokasi Tempat Pemungutan Suara (TPS) melalui peta interaktif. Dengan menggunakan aplikasi ini, pengguna dapat dengan mudah menemukan TPS yang mereka butuhkan untuk melakukan hak pilih secara efisien.
                 </p>
                 <p>
                     Dilengkapi dengan fitur pelacakan dan penentuan lokasi yang canggih, SILOKATT memastikan bahwa pengguna dapat menavigasi dengan lancar dan menemukan TPS dengan tepat. Dalam beberapa kali ketukan di layar ponsel, pengguna dapat melihat peta yang intuitif dan jelas dengan penanda TPS yang terintegrasi.
