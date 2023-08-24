@@ -43,38 +43,57 @@
 
 <script>   
     function formatCoordinates(latitude, longitude) {
-    // Pengecekan apakah koordinat sudah dalam format yang benar
-    const validLatitudePattern = /^-?\d+\.\d+$/;
-    const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
+        // Pengecekan apakah koordinat sudah dalam format yang benar
+        const validLatitudePattern = /^-?\d+\.\d+$/;
+        const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
 
-    if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
+        if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
+            return {
+                formattedLatitude: latitude,
+                formattedLongitude: longitude
+            };
+        }
+
+        // Jika koordinat perlu diformat
+        const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
+        const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
+
+        let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
+        let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
+
+        // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
+        if (!validLatitudePattern.test(formattedLatitude)) {
+            formattedLatitude = latitude;
+        }
+
+        if (!validLongitudePattern.test(formattedLongitude)) {
+            formattedLongitude = longitude;
+        }
+
         return {
-            formattedLatitude: latitude,
-            formattedLongitude: longitude
+            formattedLatitude,
+            formattedLongitude
         };
     }
 
-    // Jika koordinat perlu diformat
-    const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
-    const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
+    function filterMarkersByKelurahanAndNumber(kelurahan, tpsNumber) {
+        filteredMarkers = [];
 
-    let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
-    let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
+        for (var kodeKab in markers) {
+            markers[kodeKab].singleMarkers.eachLayer(function(marker) {
+                var markerKelurahan = marker.options.kode_kel;
+                var markerTpsNumber = marker.options.nama_tps ? marker.options.nama_tps.toString() : '';
 
-    // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
-    if (!validLatitudePattern.test(formattedLatitude)) {
-        formattedLatitude = latitude;
+                if ((kelurahan === '' || kelurahan === markerKelurahan) &&
+                    (tpsNumber === '' || markerTpsNumber === tpsNumber)) {
+                    marker.addTo(map);
+                    filteredMarkers.push(marker); // Tambahkan marker yang cocok ke dalam filteredMarkers
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+        }
     }
-
-    if (!validLongitudePattern.test(formattedLongitude)) {
-        formattedLongitude = longitude;
-    }
-
-    return {
-        formattedLatitude,
-        formattedLongitude
-    };
-}
 
 
 
@@ -88,40 +107,64 @@
 
     var markers = {}; // Objek untuk menyimpan marker-cluster
     var currentZoom = map.getZoom(); // Menyimpan tingkat zoom saat ini
+    var kecamatanMarkers = {};
+    var filteredMarkers = [];
+
 
     // Fungsi untuk mengganti ikon cluster berdasarkan 'kode_kab' pada tingkat zoom 7
     function updateClusterIcons() {
         for (var kodeKab in markers) {
-        (function(kodeKab) {
-            var cluster = markers[kodeKab].cluster;
+            (function(kodeKab) {
+                var kabCluster = markers[kodeKab].cluster;
+                var kecamatanCluster = markers[kodeKab].kecamatanCluster;
 
-            var kabIconUrl = '<?= base_url() ?>/assets/user/image/' + kodeKab + '.png';
+                var kabIconUrl = '<?= base_url() ?>/assets/user/image/' + kodeKab + '.png';
 
-            // Hapus ikon yang ada dan tambahkan ikon baru
-            cluster.options.iconCreateFunction = function(cluster) {
-                return L.divIcon({
-                    className: 'cluster-icon',
-                    html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="35">' + cluster.getChildCount(),
-                    iconSize: [20, 20]
-                });
-            };
+                // Hapus ikon yang ada dan tambahkan ikon baru untuk cluster kabupaten
+                kabCluster.options.iconCreateFunction = function(cluster) {
+                    return L.divIcon({
+                        className: 'cluster-icon',
+                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="35">' + cluster.getChildCount(),
+                        iconSize: [20, 20]
+                    });
+                };
 
-            if (map.getZoom() > 7) {
-                map.removeLayer(cluster);
-                map.addLayer(markers[kodeKab].singleMarkers);
-            } else {
-                map.removeLayer(markers[kodeKab].singleMarkers);
-                map.addLayer(cluster);
-            }
-        })(kodeKab);
+                // Hapus ikon yang ada dan tambahkan ikon baru untuk cluster kecamatan
+                kecamatanCluster.options.iconCreateFunction = function(cluster) {
+                    var kecamatanName = cluster.getAllChildMarkers()[0].options.kecamatanName;
+                    return L.divIcon({
+                        className: 'kecamatan-cluster-icon',
+                        html: '<div class="kecamatan-name">Kec. ' + kecamatanName + '</div>',
+                        iconSize: [100, 30] // Sesuaikan ukuran ikon
+                    });
+                };
+
+                // Ganti kode berikut sesuai kebutuhan Anda
+                if (map.getZoom() < 7) {
+                    map.removeLayer(kabCluster);
+                    map.removeLayer(kecamatanCluster); // Hapus subcluster kecamatan saat zoom > 7
+                    map.addLayer(markers[kodeKab].singleMarkers);
+                } else if (map.getZoom() >= 8) { // Contoh level zoom untuk munculnya subcluster kecamatan
+                    map.removeLayer(kabCluster);
+                    map.addLayer(kecamatanCluster); // Tampilkan subcluster kecamatan saat zoom di antara 6 dan 7
+                    map.removeLayer(markers[kodeKab].singleMarkers);
+                } else {
+                    map.addLayer(kabCluster);
+                    map.removeLayer(kecamatanCluster); // Hapus subcluster kecamatan saat zoom < 6
+                    map.removeLayer(markers[kodeKab].singleMarkers);
+                }
+            })(kodeKab);
+        }
     }
-    }
+
 
     // Fungsi untuk memperbarui penanda pada peta
     function updateMarkers() {
         <?php foreach ($map as $data): ?>
             var tpsNumber = '<?= $data->nama_tps ?>';
             var kodeKab = '<?= $data->kode_kab ?>';
+            var kodeKec = '<?= $data->kode_kec ?>';
+            var kodeKel = '<?= $data->kode_kel ?>'; 
             var kabIconUrl = '<?= base_url() ?>/assets/user/image/' + kodeKab + '.png'; // Sesuaikan dengan path ikon kabupaten
 
             var latitude = "<?= $data->latitude ?>"
@@ -139,6 +182,7 @@
             });
             var data = {
                 nama_tps: " <?= $data->nama_tps ?>",
+                nama_kec: "<?= $data->nama_kec ?>",
                 nama_kel: "<?= $data->nama_kel ?>",
                 alamat: "<?= $data->alamat ?>",
                 latitude: formattedLatitude,
@@ -146,6 +190,8 @@
             };
             var popupContent = `
                 <strong> TPS ${data.nama_tps}</strong>
+                <br>
+                <strong> Kecamatan</strong> ${data.nama_kec}
                 <br>
                 <strong> Kelurahan</strong> ${data.nama_kel}
                 <br>
@@ -155,22 +201,35 @@
 
             var lokasi = L.marker([formattedLatitude, formattedLongitude], {
                 icon: customIcon,
-                kode_kel: '<?= $data->kode_kel ?>'
+                nama_tps: '<?= $data->nama_tps ?>',
+                kode_kel: '<?= $data->kode_kel ?>',
+                kode_kec: '<?= $data->kode_kec ?>',
+                kecamatanName: '<?= $data->nama_kec ?>'
             }).bindPopup(popupContent);
 
                 
 
-            // Kelompokkan marker berdasarkan 'kode_kab'
+            // Kelompokkan marker kecamatan di bawah cluster kabupaten yang sesuai
             if (!markers.hasOwnProperty(kodeKab)) {
                 markers[kodeKab] = {
                     cluster: L.markerClusterGroup(),
                     singleMarkers: L.layerGroup() // Tambahkan layer group untuk marker individu
                 };
             }
+            if (!markers[kodeKab].kecamatanCluster) {
+                markers[kodeKab].kecamatanCluster = L.markerClusterGroup(); // Tambahkan cluster khusus kecamatan
+            }
 
+            // Pastikan kode kecamatan ada sebelum menambahkan marker ke cluster kecamatan
+            if (kodeKec) {
+                markers[kodeKab].kecamatanCluster.addLayer(lokasi); // Tambahkan marker ke cluster kecamatan
+            } else {
+                markers[kodeKab].cluster.addLayer(lokasi); // Tambahkan marker ke cluster kabupaten
+            }
             // Tambahkan marker ke kelompok yang sesuai
             markers[kodeKab].cluster.addLayer(lokasi);
             markers[kodeKab].singleMarkers.addLayer(lokasi);
+            markers[kodeKab].kecamatanCluster.addLayer(lokasi); 
         <?php endforeach; ?>
 
         // Tambahkan cluster atau marker individu berdasarkan tingkat zoom saat ini
@@ -203,7 +262,7 @@
 
         for (var kodeKab in markers) {
             if (selectedKodeKab === '' || selectedKodeKab === kodeKab) {
-                if (map.getZoom() > 7) {
+                if (map.getZoom() < 5) {
                     map.addLayer(markers[kodeKab].singleMarkers);
                 } else {
                     map.addLayer(markers[kodeKab].cluster);
@@ -215,11 +274,38 @@
         }
     });
 
+    var typingTimer;
+    var doneTypingInterval = 1000; // Menunggu 1 detik setelah pengguna selesai menginputkan
+
+    document.getElementById('tpsNameFilter').addEventListener('input', function() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    // Fungsi yang akan dipanggil setelah selesai menginputkan
+    function doneTyping() {
+        var selectedKelurahan = document.getElementById('kodeKelFilter').value;
+        var tpsNumber = document.getElementById('tpsNameFilter').value;
+
+        filterMarkersByKelurahanAndNumber(selectedKelurahan, tpsNumber);
+
+        // Lakukan zoom ke lokasi marker yang cocok jika ada
+        if (filteredMarkers.length > 0) {
+            var bounds = new L.LatLngBounds(filteredMarkers.map(function(marker) {
+                return marker.getLatLng();
+            }));
+            map.fitBounds(bounds);
+        }
+    }
+
+
+
+
         // form select kecamatan
         $("#kodeKabFilter").change(function() {
             var id_kabupaten = $(this).val();
-            $("#kodeKecFilter").empty();
-            $("#kodeKelFilter").empty();
+            // $("#kodeKecFilter").empty();
+            // $("#kodeKelFilter").empty();
 
             $.ajax({
                 url: "Admin/get_kecamatan_by_kabupaten/" + id_kabupaten,
@@ -237,7 +323,7 @@
         // form select kelurahan
         $("#kodeKecFilter").change(function() {
             var id_kecamatan = $(this).val();
-            $("#kodeKelFilter").empty();
+            // $("#kodeKelFilter").empty();
             $("#kodeKelFilter").prop('disabled', false);
 
             $.ajax({
@@ -253,45 +339,44 @@
             });
         });
 
-        // Tambahkan event listener untuk perubahan pilihan filter kelurahan
-    $("#kodeKelFilter").change(function() {
-        var id_kelurahan = $(this).val();
+        $("#kodeKelFilter").change(function() {
+            var id_kelurahan = $(this).val();
+            $("#tpsNameFilter").prop('disabled', false);
 
-        // Hapus semua marker individu yang ada pada peta
-        map.eachLayer(function(layer) {
-            if (layer instanceof L.Marker) {
-                map.removeLayer(layer);
-            }
-        });
-
-        // Tampung marker yang sesuai dengan filter kelurahan
-        var filteredMarkers = [];
-
-        // Loop melalui data untuk menampilkan marker individu berdasarkan filter kelurahan
-        for (var kodeKab in markers) {
-            var markerGroup = markers[kodeKab].singleMarkers;
-            markerGroup.eachLayer(function(marker) {
-                var kelurahanKode = marker.options.kode_kel;
-                if (id_kelurahan === '' || id_kelurahan === kelurahanKode) {
-                    filteredMarkers.push(marker);
+            // Hapus semua marker individu yang ada pada peta
+            map.eachLayer(function(layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
                 }
             });
-        }
 
-        // Tambahkan marker yang sesuai kembali ke peta
-        for (var i = 0; i < filteredMarkers.length; i++) {
-            map.addLayer(filteredMarkers[i]);
-        }
+            // Tampung marker yang sesuai dengan filter kelurahan
+            var filteredMarkers = [];
 
-        // Lakukan zoom ke lokasi marker yang ada dengan filter kelurahan yang dipilih
-        if (filteredMarkers.length > 0) {
-            var bounds = new L.LatLngBounds(filteredMarkers.map(function(marker) {
-                return marker.getLatLng();
-            }));
-            map.fitBounds(bounds);
-        }
-    });
+            // Loop melalui data untuk menampilkan marker individu berdasarkan filter kelurahan
+            for (var kodeKab in markers) {
+                var markerGroup = markers[kodeKab].singleMarkers;
+                markerGroup.eachLayer(function(marker) {
+                    var kelurahanKode = marker.options.kode_kel;
+                    if (id_kelurahan === '' || id_kelurahan === kelurahanKode) {
+                        filteredMarkers.push(marker);
+                    }
+                });
+            }
 
+            // Tambahkan marker yang sesuai kembali ke peta
+            for (var i = 0; i < filteredMarkers.length; i++) {
+                map.addLayer(filteredMarkers[i]);
+            }
+
+            // Lakukan zoom ke lokasi marker yang ada dengan filter kelurahan yang dipilih
+            if (filteredMarkers.length > 0) {
+                var bounds = new L.LatLngBounds(filteredMarkers.map(function(marker) {
+                    return marker.getLatLng();
+                }));
+                map.fitBounds(bounds);
+            }
+        });
 </script>
 
 

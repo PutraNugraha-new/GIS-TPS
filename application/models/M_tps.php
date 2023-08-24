@@ -13,6 +13,15 @@ class M_tps extends CI_Model {
         return $this->db->get()->result();
     }
     
+    public function count_tps_per_kabupaten() {
+        $this->db->select('kabupaten.nama_kab, COUNT(tps.id_tps) as total_tps');
+        $this->db->from('tps');
+        $this->db->join('kabupaten', 'tps.kode_kab = kabupaten.kode_kab', 'left');
+        $this->db->group_by('kabupaten.nama_kab');
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
 
 	//add
     public function add($data)

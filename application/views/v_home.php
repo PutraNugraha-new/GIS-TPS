@@ -29,41 +29,13 @@
     </div>
     <div class="wrapper container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
         <ul class="carousel">
+            <?php foreach($jumlah as $data): ?>
             <li class="card">
-                <p>Kotawaringin Timur</p>
-                <p>124</p>
+                <p><?= $data->nama_kab ?></p>
+                <p><?= $data->total_tps ?></p>
                 <p>TPS</p>
             </li>
-            <li class="card">
-                <p>Kotawaringin Barat</p>
-                <p>14</p>
-                <p>TPS</p>
-            </li>
-            <li class="card">
-                <p>Barito Timur</p>
-                <p>12</p>
-                <p>TPS</p>
-            </li>
-            <li class="card">
-                <p>Barito Selatan</p>
-                <p>124</p>
-                <p>TPS</p>
-            </li>
-            <li class="card">
-                <p>Barito Utara</p>
-                <p>62</p>
-                <p>TPS</p>
-            </li>
-            <li class="card">
-                <p>Lamandau</p>
-                <p>65</p>
-                <p>TPS</p>
-            </li>
-            <li class="card">
-                <p>Gunung Mas</p>
-                <p>12</p>
-                <p>TPS</p>
-            </li>
+            <?php endforeach; ?>
         </ul>
     </div>
 </div>
@@ -76,10 +48,10 @@
                 <h2>Peta</h2>
             </div>
         </div>
+        <div class="col-md-1">
+            <h4 class="text-secondary">Filter :</h4>
+        </div>
         <div class="row">
-            <div class="col-md-1">
-                <h4 class="text-secondary">Filter :</h4>
-            </div>
             <div class="col-md-3 form-group mb-3">
                 <select id="kodeKabFilter" class="form-select">
                     <option value="">Semua Kabupaten</option>
@@ -99,6 +71,9 @@
                 <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
                     <option value="">-- Pilih Kelurahan --</option>
                 </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <input type="text" id="tpsNameFilter" class="form-control" placeholder="Masukkan Nomor TPS" disabled>
             </div>
         </div>
         <div class="row">

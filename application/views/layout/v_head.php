@@ -43,7 +43,7 @@
         .custom-icon {
             text-align: center;
             color: white;
-        }
+        }   
 
         .icon-container {
             background-color: #B10505;
@@ -81,6 +81,19 @@
             font-weight: bold;
             font-size: 14px;
         }
+
+        .kecamatan-cluster-icon {
+        background-color: #007BFF;
+        /* border-radius: 50%; */
+        text-align: center;
+        line-height: 30px;
+        color: white;
+    }
+    .kecamatan-name {
+        font-size: 12px;
+        font-weight: bold;
+        /* margin :2px; */
+    }
 
         
     </style>
