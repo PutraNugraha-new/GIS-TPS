@@ -5,8 +5,8 @@ layer  = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-var latInput = document.querySelector("[name=latitude]");
-var lngInput = document.querySelector("[name=longitude]");
+var latInput = document.querySelector("[id=latitude]");
+var lngInput = document.querySelector("[id=longitude]");
 map.on("click", function(e){
     var lat=e.latlng.lat;
     var lng=e.latlng.lng;
@@ -20,3 +20,4 @@ map.on("click", function(e){
     latInput.value = lat;
     lngInput.value = lng;
 })
+

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?></title>
+    <title>SILOKAT | KPU Provinsi Kalimantan Tengah</title>
     
     <link rel="stylesheet" href="<?= base_url() ?>/assets/css/main/app.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/css/main/app-dark.css">
-    <link rel="shortcut icon" href="<?= base_url() ?>/assets/images/logo/favicon.svg" type="image/x-icon">
-    <link rel="shortcut icon" href="<?= base_url() ?>/assets/images/logo/favicon.png" type="image/png">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/css/custom.css">
+    <link rel="shortcut icon" href="<?= base_url() ?>/assets/user/image/logo-kpu.png" type="image/png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- choice  -->
@@ -31,15 +31,28 @@
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
 
-    <!-- routing machine -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+        <!-- routing machine -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+        <!-- datatables -->
+        <link rel="stylesheet" href="<?= base_url() ?>/assets/css/pages/fontawesome.css">
+        <link rel="stylesheet" href="<?= base_url() ?>/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" href="<?= base_url() ?>/assets/css/pages/datatables.css">
 
     <style>
         #map { 
             height: 70vh;
             border-radius:5px; 
         }
+        #edit-map { 
+            height: 70vh;
+            border-radius:5px; 
+        }
+        .small-font {
+            font-size: 11pt; Atur ukuran font sesuai kebutuhan Anda
+        }
+
     </style>
 
 </head>

@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col-md-3 form-group mb-3">
                 <select id="kodeKabFilter" class="form-select">
-                    <option value="">Semua Kabupaten</option>
+                    <option value="">Semua Kabupaten/kota</option>
                     <!-- Tambahkan pilihan berdasarkan kode_kab yang ada di database -->
                     <?php foreach($kab as $data): ?>
                         <option value="<?= $data->kode_kab ?>"><?= $data->nama_kab ?></option>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-3 form-group mb-3">
                 <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
-                    <option value="">-- Pilih Kelurahan --</option>
+                    <option value="">-- Pilih Kelurahan/desa --</option>
                 </select>
             </div>
             <div class="col-md-3 form-group mb-3">

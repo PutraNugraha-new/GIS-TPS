@@ -144,7 +144,7 @@
                     map.removeLayer(kabCluster);
                     map.removeLayer(kecamatanCluster); // Hapus subcluster kecamatan saat zoom > 7
                     map.addLayer(markers[kodeKab].singleMarkers);
-                } else if (map.getZoom() >= 8) { // Contoh level zoom untuk munculnya subcluster kecamatan
+                } else if (map.getZoom() > 7) { // Contoh level zoom untuk munculnya subcluster kecamatan
                     map.removeLayer(kabCluster);
                     map.addLayer(kecamatanCluster); // Tampilkan subcluster kecamatan saat zoom di antara 6 dan 7
                     map.removeLayer(markers[kodeKab].singleMarkers);
@@ -255,6 +255,7 @@
         if (selectedKodeKab === '') {
             $("#kodeKecFilter").prop('disabled', true);
             $("#kodeKelFilter").prop('disabled', true);
+            $("#tpsNameFilter").prop('disabled', true);
         } else {
             $("#kodeKecFilter").prop('disabled', false);
             $("#kodeKelFilter").prop('disabled', true);
@@ -304,8 +305,11 @@
         // form select kecamatan
         $("#kodeKabFilter").change(function() {
             var id_kabupaten = $(this).val();
-            // $("#kodeKecFilter").empty();
-            // $("#kodeKelFilter").empty();
+            $("#kodeKecFilter").empty();
+            $("#kodeKelFilter").empty();
+            $("#tpsNameFilter").empty();
+            $("#kodeKecFilter").append('<option>-- Pilih Kecamatan --</option>');
+            $("#kodeKelFilter").append('<option>-- Pilih Kelurahan --</option>');
 
             $.ajax({
                 url: "Admin/get_kecamatan_by_kabupaten/" + id_kabupaten,
@@ -323,7 +327,8 @@
         // form select kelurahan
         $("#kodeKecFilter").change(function() {
             var id_kecamatan = $(this).val();
-            // $("#kodeKelFilter").empty();
+            $("#kodeKelFilter").empty();
+            $("#kodeKelFilter").append('<option>-- Pilih Kelurahan --</option>');
             $("#kodeKelFilter").prop('disabled', false);
 
             $.ajax({
@@ -379,113 +384,6 @@
         });
 </script>
 
-
-<!-- <script>
-    var lat = '<?= $detail->latitude ?>'
-    var long = '<?= $detail->longitude ?>'
-    let latLong = [lat, long];
-    let centerMap = false;
-    var map = L.map('detail-map').setView(latLng, 15);
-    // var geocodeService = L.esri.Geocoding.geocodeService();
-    layer  = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        attributionControl: false
-    }).addTo(map);
-
-        var tpsNumber = '<?= $detail->nama_tps ?>';
-
-        var customIcon = L.divIcon({
-            className: 'custom-icon',
-            html: '<div class="icon-container"><span class="icon-number">TPS : ' + tpsNumber + '</span></div>',
-            iconSize: [60, 50]
-        });
-
-        var tujuanMarker = L.marker([<?= $detail->latitude ?>, <?= $detail->longitude ?>], {icon: customIcon})
-            .bindPopup('TPS <?= $detail->nama_tps ?> <br> Kelurahan <?= $detail->kode_kel ?>  <br> <button class="btn btn-info keSini" data-lat="'+<?= $detail->latitude ?>+'" data-lng="'+<?= $detail->longitude ?>+'">Kesini</button>')
-            .addTo(map)
-    
-
-            // ambil titik
-        setInterval(()=> {
-            getLocation();
-        }, 3000);
-        function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-
-    function showPosition(position) {
-        $("[name=latNow]").val(position.coords.latitude);
-        $("[name=lngNow]").val(position.coords.longitude);
-        let latLng=[position.coords.latitude,position.coords.longitude];
-            control.spliceWaypoints(0, 1, latLng);
-            if(centerMap == false){
-                map.panTo(latLng);
-                centerMap=false;
-            }
-    }
-    
-    // routing machine
-    var control = L.Routing.control({
-            waypoints: [
-                latLong
-            ],
-            geocoder: L.Control.Geocoder.nominatim(),
-            routeWhileDragging :true,
-            reverseWaypoints:true,
-            showAlternative:true,
-            altLineOptions:{
-                styles:[
-                    {color:'black', opacity:0.15, weight:9},
-                    {color:'white', opacity:0.8, weight:6},
-                    {color:'blue', opacity:0.5, weight:2}
-                ]
-            },
-        })
-        control.addTo(map);
-
-        $(document).on("click", ".keSini", function(){
-            let latLng = [$(this).data('lat'), $(this).data('lng')];
-            control.spliceWaypoints(control.getWaypoints().length - 1, 1, latLng);
-            
-            // Menutup popup pada marker tujuan
-            tujuanMarker.closePopup();
-
-            // Perbarui zoom peta untuk memuat kedua titik awal dan tujuan rute
-            var bounds = L.latLngBounds(latLng, control.getWaypoints()[0].latLng);
-            map.fitBounds(bounds);
-        });
-
-        
-
-        // Fungsi untuk menentukan rute dari titik awal ke tujuanMarker
-        function routeFromCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var currentLatLng = [position.coords.latitude, position.coords.longitude];
-                    var tujuanLatLng = tujuanMarker.getLatLng(); // Ganti 'tujuanMarker' dengan variabel yang sesuai
-
-                    // Mengganti titik awal dengan titik geolokasi saat ini
-                    control.spliceWaypoints(0, 1, currentLatLng);
-
-                    // Mengganti titik tujuan dengan tujuanMarker
-                    control.spliceWaypoints(1, 1, tujuanLatLng);
-
-                    // Fokus peta pada lokasi pengguna (titik awal)
-                    map.setView(currentLatLng, 18); // Ganti 'zoomLevel' dengan level zoom yang diinginkan
-                });
-            } else {
-                console.error("Geolocation is not supported by this browser.");
-            }
-        }
-
-        $(document).on("click", ".dariSini", function(){
-            routeFromCurrentLocation();
-        });
-</script> -->
 
 </body>
 </html>

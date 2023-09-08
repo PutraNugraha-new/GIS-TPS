@@ -31,6 +31,15 @@ class Home extends CI_Controller {
         $this->load->view('layout/v_wrapper', $data, FALSE);
     }
 
+    public function getMarkers() {
+        // Ambil data dari model atau database Anda
+        $data = $this->M_tps->allData(); // Gantilah Your_model dengan model Anda
+
+        // Set header untuk menunjukkan bahwa respons adalah JSON
+        $this->output->set_content_type('application/json');
+        echo json_encode($data);
+    }
+
     public function detail($id){
         $data = array (
             'title'=>'Sistem Informasi ...',
