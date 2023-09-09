@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="<?= base_url() ?>/assets/css/main/app-dark.css">
     <link rel="stylesheet" href="<?= base_url() ?>/assets/css/custom.css">
     <link rel="shortcut icon" href="<?= base_url() ?>/assets/user/image/logo-kpu.png" type="image/png">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/css/shared/iconly.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- choice  -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css"/> -->
@@ -37,8 +39,9 @@
 
         <!-- datatables -->
         <link rel="stylesheet" href="<?= base_url() ?>/assets/css/pages/fontawesome.css">
-        <link rel="stylesheet" href="<?= base_url() ?>/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
-        <link rel="stylesheet" href="<?= base_url() ?>/assets/css/pages/datatables.css">
+        <link rel="stylesheet" href="<?= base_url() ?>/assets/extensions/simple-datatables/style.css">
+        <link rel="stylesheet" href="<?= base_url() ?>/assets/css/pages/simple-datatables.css">
+
 
     <style>
         #map { 
@@ -51,6 +54,9 @@
         }
         .small-font {
             font-size: 11pt; Atur ukuran font sesuai kebutuhan Anda
+        }
+        .statistik h6{
+            font-size:11pt;
         }
 
     </style>

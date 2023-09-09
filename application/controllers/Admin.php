@@ -153,12 +153,12 @@ class Admin extends CI_Controller {
                 $fileData = $this->upload->data();
                 $filePath = './csv/' . $fileData['file_name'];
                 
-                var_dump($filePath);
                 $this->load->model('M_tps');
     
                 if ($this->M_tps->importCsvData($filePath)) {
                     // Impor berhasil
-                    $data['message'] = "Import Berhasil.";
+                    $this->session->set_flashdata('sukses', ' Import Berhasil !');
+                    unlink($filePath);
                     redirect('admin'); // Ganti 'products' dengan halaman yang sesuai
                 } else {
                     // Impor gagal
@@ -181,6 +181,24 @@ class Admin extends CI_Controller {
         );
         // Load view untuk menampilkan form impor
         $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+    }
+
+    public function unduh_file($nama_file) {
+        // Tentukan path lengkap ke file yang akan diunduh
+        $this->load->helper('download');
+        $file_path = FCPATH . 'assets/template/' . $nama_file;
+
+        // Periksa apakah file ada
+        if (file_exists($file_path)) {
+            // Tentukan tipe konten untuk respons HTTP
+            $tipe_konten = mime_content_type($file_path);
+
+            // Lakukan unduhan
+            force_download($nama_file, file_get_contents($file_path), $tipe_konten);
+        } else {
+            // Jika file tidak ditemukan, tampilkan pesan error atau redirect ke halaman lain
+            echo "File tidak ditemukan";
+        }
     }
     
 

@@ -18,8 +18,12 @@
     <script src="<?= base_url() ?>/assets/user/js/Control.Geocoder.js"></script>
     <script src="<?= base_url() ?>/assets/js/leaflet.js"></script>
     <script src="<?= base_url() ?>/assets/extensions/jquery/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
-    <script src="<?= base_url() ?>/assets/js/pages/datatables.js"></script>
+    <script src="<?= base_url() ?>/assets/js/sweetAlert.js"></script>
+
+    <script src="<?= base_url() ?>/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="<?= base_url() ?>/assets/js/pages/simple-datatables.js"></script>
+    <script src="<?= base_url() ?>/assets/extensions/apexcharts/apexcharts.min.js"></script>
+    <script src="<?= base_url() ?>/assets/js/pages/dashboard.js"></script>
 
     <script>
         var centerMap = false;

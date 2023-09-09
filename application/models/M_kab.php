@@ -16,6 +16,20 @@ class M_kab extends CI_Model {
         $this->db->insert('kabupaten',$data);
     }
 
+    public function edit($data)
+    {
+        $this->db->where('kode_kab',$data['kode_kab']);
+        $this->db->update('kabupaten',$data);
+    }
+
+    function get_detail_modal($id)
+    {
+        $this->db->select('*');
+        $this->db->from('kabupaten');
+        $this->db->where('kabupaten.kode_kab', $id);
+        return $this->db->get()->row();
+    }
+
     public function delete($data)
 	{
 		$this->db->where('kode_kab', $data['kode_kab']);
