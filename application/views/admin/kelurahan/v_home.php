@@ -31,9 +31,9 @@
                                     <td><?= $data->kode_kel ?></td>
                                     <td><?= $data->nama_kel ?></td>
                                     <td>
-                                        <a href="kecamatan/edit/<?= $data->kode_kel ?>">
+                                        <!-- <a href="kecamatan/edit/<?= $data->kode_kel ?>">
                                             <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
-                                        </a>
+                                        </a> -->
                                         <a href="kecamatan/hapus/<?= $data->kode_kel ?>" onclick="return confirm('ingin Menghapus?')">
                                             <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
                                         </a>

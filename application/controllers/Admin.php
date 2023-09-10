@@ -162,7 +162,7 @@ class Admin extends CI_Controller {
                     redirect('admin'); // Ganti 'products' dengan halaman yang sesuai
                 } else {
                     // Impor gagal
-                    $data['error'] = "Terjadi kesalahan saat mengimpor data.";
+                    $this->session->set_flashdata('gagal', ' Import Berhasil !');
                 }
             } else {
                 // Error upload file
@@ -201,6 +201,9 @@ class Admin extends CI_Controller {
         }
     }
     
+    public function detail() {
+        echo json_encode($this->M_tps->get_detail_modal($_POST['id']));
+    }
 
 }
 

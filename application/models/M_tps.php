@@ -64,6 +64,7 @@ class M_tps extends CI_Model {
     
         return $query->result();
     }
+
     
 
 

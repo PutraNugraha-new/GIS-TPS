@@ -31,9 +31,9 @@
                                     <td><?= $data->kode_kab ?></td>
                                     <td><?= $data->nama_kab ?></td>
                                     <td>
-                                        <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kab ?>" data-bs-target="#exampleModal" class="tampilModalUbah">
+                                        <!-- <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kab ?>" data-bs-target="#exampleModal" class="tampilModalUbah">
                                             <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
-                                        </a>
+                                        </a> -->
                                         <a href="kabupaten/hapus/<?= $data->kode_kab ?>" onclick="return confirm('ingin Menghapus?')">
                                             <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
                                         </a>

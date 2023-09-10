@@ -39,9 +39,9 @@
                                     <td><?= $data->kode_kec ?></td>
                                     <td><?= $data->nama_kec ?></td>
                                     <td>
-                                        <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kec ?>" data-bs-target="#modalKecamatan" class="tampilModalUbah">
+                                        <!-- <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kec ?>" data-bs-target="#modalKecamatan" class="tampilModalUbah">
                                             <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
-                                        </a>
+                                        </a> -->
                                         <a href="kecamatan/hapus/<?= $data->kode_kec ?>" onclick="return confirm('ingin Menghapus?')">
                                             <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
                                         </a>
@@ -156,7 +156,7 @@
                                 '<td class="small-font">' + data.kode_kec + '</td>' +
                                 '<td class="small-font">' + data.nama_kec + '</td>' +
                                 '<td class="small-font">' +
-                                ' <a href="#" data-bs-toggle="modal" data-id="'+data.kode_kec+'" data-bs-target="#modalKecamatan" class="tampilModalUbah"><span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span></a>' +
+                                // ' <a href="#" data-bs-toggle="modal" data-id="'+data.kode_kec+'" data-bs-target="#modalKecamatan" class="tampilModalUbah"><span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span></a>' +
                                 '<a href="admin/hapus/' + data.kode_kec + '" onClick="confirm(\'ingin Menghapus?\')">' +
                                 '<span class="badge bg-danger"><i class="bi bi-trash"></i></span>' +
                                 '</a>' +
