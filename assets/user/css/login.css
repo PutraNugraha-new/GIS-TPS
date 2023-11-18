@@ -1,0 +1,78 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: #F2F7FF;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+:root {
+    --main-color: #B10505;
+    --second-color:#858383;  
+    --putih :#FFFFFF;
+    --hitam :#000000;
+    --main-font: 'Inria Sans', sans-serif;
+    --second-font:'Inter', sans-serif;
+}
+.container-fluid{
+    height: 100vh;
+}
+.login{
+    background-color: #fff;
+    padding: 0 1.50em 0 1.50em;
+    width: max-content;
+    height: max-content;
+    border-radius: 12px;
+    box-shadow: 2px 2px 16px 0px rgba(0, 0, 0, 0.10);
+}
+
+.login-header{
+    margin-top: 2.25em;
+    margin-bottom: 2.25em;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.login-header img{
+    width: 85%;
+}
+
+.form-login{
+    margin: 1.25em;
+}
+
+.form-login .form-group{
+    margin-bottom: 1em;
+}
+
+.form-login .form-control{
+    margin-bottom: 2.25em;
+    border: none; /* Menghilangkan border standar */
+    border-bottom: 1px solid #000; /* Menambahkan border pada bagian bawah */
+    border-radius: 0;
+    padding: 8px; /* Memberikan ruang di sekitar teks dalam input */
+    width: 100%; /* Membuat input form mengambil lebar penuh dari parent container */
+    box-sizing: border-box; /* Memastikan bahwa padding tidak menambah lebar total */
+    outline: none; /* Menghilangkan outline fokus pada input (opsional, bisa disesuaikan) */
+    box-shadow: none;
+}
+
+.form-login .btn {
+    background-color: #B10505;
+    display: block;
+    margin-top: 3em;
+    margin-bottom: 2em;
+    width: 40%;
+    height: 3em;
+}
+
+.login .footer {
+    text-align: center;
+    font-size: 12pt;
+    margin :1.25em;
+    color: var(--second-color);
+}

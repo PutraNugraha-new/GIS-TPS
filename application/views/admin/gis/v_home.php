@@ -3,20 +3,22 @@
         <?= $this->session->flashdata('sukses'); ?>
     </div>
 <?php endif; ?>
-<div class="row">
+<div class="card">
+    <div class="card-body">
+    <div class="row">
     <div class="col-md-12">
         <div class="card-header">
                 <div class="row">
-                    <div class="col-md-7">
-                        <a href="admin/tambah" class="btn btn-warning">
+                    <div class="col-md-9">
+                        <a href="admin/tambah" class="btn btn-warning my-1">
                             <i class="bi bi-plus-circle"></i>
                             Tambah Data
                         </a>
                         <a href="#" class="btn btn-success importCsv" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                            Import csv
+                            Import Data
                         </a>
-                        <a href="admin/unduh_file/csv-template.xlsx" class="btn btn-info my-1">
+                        <a href="admin/unduh_file/template-excel.xlsx" class="btn btn-info my-1">
                         <i class="bi bi-file-earmark-arrow-down-fill"></i>
                             Download Template Excel
                         </a>
@@ -70,8 +72,8 @@
                                         <a href="admin/edit/<?= $data->id_tps ?>" >
                                             <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
                                         </a>
-                                        <a href="#" data-bs-toggle="modal" class="tampilModalDetail" data-bs-target="#exampleModal" data-id="<?= $data->id_tps ?>">
-                                            <span class="badge bg-info mb-2"><i class="bi bi-eye"></i></span>
+                                        <a href="admin/detail/<?= $data->id_tps ?>" >
+                                            <span class="badge bg-success mb-2"><i class="bi bi-eye"></i></span>
                                         </a>
                                         <a href="admin/hapus/<?= $data->id_tps ?>" id="tombolHapus" onclick="return confirm('yakin?')">
                                             <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
@@ -85,130 +87,38 @@
         </div>
     </div>
 </div>
+    </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import CSV</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
         <div class="modal-body">
+            <form action="admin/importData" method="POST" enctype="multipart/form-data">
                     <div class="form-body">
                         <div class="row" id="defaultContent">
                             <div class="col-md-4">
-                                <label>Import CSV</label>
+                                <label>Import Data</label>
                             </div>
                             <div class="col-md-8 form-group">
-                                <input type="file" class="form-control" name="csv_file" accept=".csv">
+                                <input type="file" class="form-control"id="mentahTPS" name="mentahTPS" accept=".xlsx, .xls">
                             </div>
-                        </div>
-                        <div class="row" id="ajaxContent">
-                        <div class="col-md-4">
-                                    <label>Nomor TPS</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="number" id="no_tps" class="form-control" name="nama_tps"
-                                        readonly>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label>Kabupaten</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="text" id="kabupaten" class="form-control" name="kode_kab"
-                                        readonly>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label>Kecamatan</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="text" id="kecamatan" class="form-control" name="kode_kec"
-                                        readonly>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label>Kelurahan</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="text" id="kelurahan" class="form-control" name="kode_kel"
-                                        readonly>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label>Alamat</label>
-                                </div>
-                                <div class="col-md-8 form-group mb-3">
-                                    <input type="text" id="alamat" class="form-control" name="alamat"
-                                        readonly>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label>Latitude</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="text" id="lat" class="form-control" name="latitude"
-                                    readonly>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label>Longitude</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input type="text" id="long" class="form-control" name="longitude"
-                                        readonly>
-                                </div>
                         </div>
                     </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary me-1 mb-1 btnImport">Submit</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.importCsv').on('click', function() {
-            const id = $(this).data('id');
-            $('#exampleModalLabel').html('Detail Data');
-            $('#ajaxContent').hide();
-            $('#defaultContent').show();
-        });
-        $('.tampilModalDetail').on('click', function() {
-            const id = $(this).data('id');
-            $('#exampleModalLabel').html('Detail Data');
-            $('#defaultContent').hide();
-            $('.btnImport').hide();
-            $('#ajaxContent').show();
-
-            $.ajax({
-                url: 'admin/detail',
-                data: {id: id},
-                method: 'post',
-                dataType: 'json',
-                success: function(data) {
-                    // Pastikan untuk menetapkan nilai-nilai elemen modal dengan data yang sesuai.
-                    $('#kabupaten').val(data.nama_kab);
-                    $('#kecamatan').val(data.nama_kec);
-                    $('#kelurahan').val(data.nama_kel);
-                    $('#no_tps').val(data.nama_tps);
-                    $('#alamat').val(data.alamat);
-                    $('#lat').val(data.latitude);
-                    $('#long').val(data.longitude);
-                },
-                error: function() {
-                    // Handle error jika ada.
-                    alert('Gagal memuat detail data.');
-                }
-            });
-        });
-
-    });
-</script>
-
 <script>
     $(document).ready(function () {
     // Tangkap perubahan pada dropdown select

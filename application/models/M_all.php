@@ -6,7 +6,7 @@ class M_all extends CI_Model {
     // ambil data 
     public function countTps(){
         $this->db->select('*');
-        $this->db->from('tps');
+        $this->db->from('data_tps');
         return $this->db->count_all_results();
     }
     public function countKab(){

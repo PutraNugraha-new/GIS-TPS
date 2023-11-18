@@ -3,54 +3,58 @@
         <?= $this->session->flashdata('sukses'); ?>
     </div>
 <?php endif; ?>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card-header">
-                <div class="row">
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalKecamatan">
-                        <i class="bi bi-plus-circle"></i>
-                            Tambah Data
-                        </button>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" name="kabupaten" id="kabupaten">
-                            <option value="">Pilih Kabupaten</option>
-                            <?php foreach($kab as $k): ?>
-                                <option value="<?= $k->kode_kab ?>"><?= $k->nama_kab ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3 my-2">
+                                <button type="button" class="btn btn-tambah btn-warning" data-bs-toggle="modal" data-bs-target="#modalKecamatan">
+                                <i class="bi bi-plus-circle"></i>
+                                    Tambah Data
+                                </button>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <select class="form-select" name="kabupaten" id="kabupaten">
+                                    <option value="">Pilih Kabupaten</option>
+                                    <?php foreach($kab as $k): ?>
+                                        <option value="<?= $k->kode_kab ?>"><?= $k->nama_kab ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div> -->
+                        </div>
+                            
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Kode kecamatan</th>
+                                        <th>Nama kecamatan</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($kec as $data): ?>
+                                        <tr>
+                                            <td><?= $data->kode_kec ?></td>
+                                            <td><?= $data->nama_kec ?></td>
+                                            <td>
+                                                <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kec ?>" data-bs-target="#modalKecamatan" class="tampilModalUbah">
+                                                    <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
+                                                </a>
+                                                <a href="kecamatan/hapus/<?= $data->kode_kec ?>" onclick="return confirm('ingin Menghapus?')">
+                                                    <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                 </div>
-                    
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped" id="table1">
-                        <thead>
-                            <tr>
-                                <th>Kode kecamatan</th>
-                                <th>Nama kecamatan</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($kec as $data): ?>
-                                <tr>
-                                    <td><?= $data->kode_kec ?></td>
-                                    <td><?= $data->nama_kec ?></td>
-                                    <td>
-                                        <!-- <a href="#" data-bs-toggle="modal" data-id="<?= $data->kode_kec ?>" data-bs-target="#modalKecamatan" class="tampilModalUbah">
-                                            <span class="badge bg-success mb-2"><i class="bi bi-pencil"></i></span>
-                                        </a> -->
-                                        <a href="kecamatan/hapus/<?= $data->kode_kec ?>" onclick="return confirm('ingin Menghapus?')">
-                                            <span class="badge bg-danger"><i class="bi bi-trash"></i></span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -108,6 +112,14 @@
 
 <script>
     $(document).ready(function() {
+        $('.btn-tambah').on('click', function() {
+            const id = $(this).data('id');
+            $('#exampleModalLabel').html('Tambah Data Kecamatan');
+            $('.modal-body form').attr('action', 'kecamatan/add');
+            $('#kabupaten').val('');
+            $('#nama_kec').val('');
+            $('#kode_kec').val('');
+        });
         $('.tampilModalUbah').on('click', function() {
             const id = $(this).data('id');
             $('#exampleModalLabel').html('Ubah Data');
@@ -124,7 +136,8 @@
                     $('#kabupaten').val(data.kode_kab);
                     $('#kode_kec').val(data.kode_kec);
                     $('#nama_kec').val(data.nama_kec);
-                    $('#kode_kec').prop('disabled', true)
+                    $('#kode_kec').prop('readonly', true)
+                    $('#kabupaten').prop('readonly', true)
                 }
             });
         });

@@ -10,6 +10,22 @@ class M_kel extends CI_Model {
         return $this->db->get()->result();
     }
 
+    public function add($data){
+        $this->db->insert('kelurahan', $data);
+    }
+
+    public function delete($data){
+        $this->db->where('kode_kel', $data['kode_kel']);
+        $this->db->delete('kelurahan', $data);
+    }
+
+    function get_detail_modal($id)
+    {
+        $this->db->select('*');
+        $this->db->from('kelurahan');
+        $this->db->where('kelurahan.kode_kel', $id);
+        return $this->db->get()->row();
+    }
 }
 
 /* End of file M_Wisata.php */

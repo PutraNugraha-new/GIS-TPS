@@ -1,12 +1,24 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+require FCPATH . 'vendor/autoload.php';
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 class Admin extends CI_Controller {
+
+    public $status;
+    public $roles;
 
     public function __construct()
 	{
 		parent::__construct();
+        $this->load->model('User_model', 'user_model', TRUE);
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->status = $this->config->item('status');
+        $this->roles = $this->config->item('roles');
+        $this->load->library('userlevel');
+
 		$this->load->model("M_tps");
 		$this->load->model("M_kab");
 		$this->load->model("M_kel");
@@ -15,48 +27,114 @@ class Admin extends CI_Controller {
 
     public function index()
     {
-        $data = array(
-            'title'=>'Sistem Informasi ...',
-            'title2'=>'Data TPS',
-            'user' => 'Putra Nugraha',
-            'isi'   =>  'admin/gis/v_home',
-            'map' => $this->M_tps->allData(),
-            'kel' => $this->M_kel->allData(),
-            'kab' => $this->M_kab->allData(),
-            'kec' => $this->M_kec->allData()
-        );
-        // var_dump($data);
-        $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        
+        //user data from session
+	    $data = $this->session->userdata;
+	    if(empty($data)){
+	        redirect(site_url().'main/login/');
+	    }
+
+	    //check user level
+	    if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
+	    $dataLevel = $this->userlevel->checkLevel($data['role']);
+	    //check user level
+        
+	    $data['title'] = "Dashboard Admin";
+	    
+        if(empty($this->session->userdata['email'])){
+            redirect(site_url().'main/login/');
+        }else{
+            $data = array(
+                'title'=>'Sistem Informasi ...',
+                'title2'=>'Data TPS',
+                'user' => $this->session->userdata['first_name'],
+                'isi'   =>  'admin/gis/v_home',
+                'map' => $this->M_tps->allData(),
+                'kel' => $this->M_kel->allData(),
+                'kab' => $this->M_kab->allData(),
+                'kec' => $this->M_kec->allData(),
+                'dataLevel' => $dataLevel
+            );
+           // var_dump($data);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
     }
+    public function getDataForTable() {
+        // Ambil data dari model atau database Anda
+        $data = $this->M_tps->allData(); // Gantilah Your_model dengan model Anda
+
+        // Set header untuk menunjukkan bahwa respons adalah JSON
+        $this->output->set_content_type('application/json');
+        echo json_encode($data);
+    }
+
     public function tambah()
     {
-        $data = array(
-            'title'=>'Sistem Informasi ...',
-            'title2'=>'Data TPS',
-            'user' => 'Putra Nugraha',
-            'isi'   =>  'admin/gis/v_tambah',
-            'map' => $this->M_tps->allData(),
-            'kel' => $this->M_kel->allData(),
-            'kab' => $this->M_kab->allData(),
-            'kec' => $this->M_kec->allData()
-        );
-        // var_dump($data);
-        $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        //user data from session
+	    $data = $this->session->userdata;
+	    if(empty($data)){
+	        redirect(site_url().'main/login/');
+	    }
+
+	    //check user level
+	    if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
+	    $dataLevel = $this->userlevel->checkLevel($data['role']);
+	    //check user level
+	    
+        if(empty($this->session->userdata['email'])){
+            redirect(site_url().'main/login/');
+        }else{
+            $data = array(
+                'title'=>'Sistem Informasi ...',
+                'title2'=>'Data TPS',
+                'user' => $this->session->userdata['first_name'],
+                'isi'   =>  'admin/gis/v_tambah',
+                'map' => $this->M_tps->allData(),
+                'kel' => $this->M_kel->allData(),
+                'kab' => $this->M_kab->allData(),
+                'kec' => $this->M_kec->allData(),
+                'dataLevel' => $dataLevel
+            );
+            // var_dump($data);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
     }
     public function edit($id)
     {
-        $data = array(
-            'title'=>'Sistem Informasi ...',
-            'title2'=>'Data TPS',
-            'user' => 'Putra Nugraha',
-            'isi'   =>  'admin/gis/v_edit',
-            'map' => $this->M_tps->get_detail_modal($id),
-            'kel' => $this->M_kel->allData(),
-            'kab' => $this->M_kab->allData(),
-            'kec' => $this->M_kec->allData()
-        );
-        // var_dump($data);
-        $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+         //user data from session
+	    $data = $this->session->userdata;
+	    if(empty($data)){
+	        redirect(site_url().'main/login/');
+	    }
+
+	    //check user level
+	    if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
+	    $dataLevel = $this->userlevel->checkLevel($data['role']);
+	    //check user level
+	    
+        if(empty($this->session->userdata['email'])){
+            redirect(site_url().'main/login/');
+        }else{
+            $data = array(
+                'title'=>'Sistem Informasi ...',
+                'title2'=>'Data TPS',
+                'user' => $this->session->userdata['first_name'],
+                'isi'   =>  'admin/gis/v_edit',
+                'map' => $this->M_tps->get_detail_modal($id),
+                'kel' => $this->M_kel->allData(),
+                'kab' => $this->M_kab->allData(),
+                'kec' => $this->M_kec->allData(),
+                'dataLevel' => $dataLevel
+            );
+            // var_dump($data);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
     }
 
     public function getTpsByKabupaten() {
@@ -90,8 +168,9 @@ class Admin extends CI_Controller {
             $data = array(
                 'title'=>'Sistem Informasi ...',
                 'title2'=>'Data TPS',
-                'user' => 'Putra Nugraha',
+                'user' => $this->session->userdata['first_name'],
                 'isi'   =>  'admin/gis/v_home',
+                'dataLevel' => $dataLevel
             );
 		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
     }
@@ -125,8 +204,9 @@ class Admin extends CI_Controller {
             $data = array(
                 'title'=>'Sistem Informasi ...',
                 'title2'=>'Data TPS',
-                'user' => 'Putra Nugraha',
+                'user' => $this->session->userdata['first_name'],
                 'isi'   =>  'admin/gis/v_home',
+                'dataLevel' => $dataLevel
             );
 		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
 	}
@@ -141,46 +221,101 @@ class Admin extends CI_Controller {
 	}
 
     public function importData() {
-        if ($_FILES['csv_file']['name']) {
-            $config['upload_path']   = './csv/';
-            $config['allowed_types'] = 'csv';
-            $config['max_size']      = 1000; // maksimum file size (KB)
-            
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-    
-            if ($this->upload->do_upload('csv_file')) {
-                $fileData = $this->upload->data();
-                $filePath = './csv/' . $fileData['file_name'];
-                
-                $this->load->model('M_tps');
-    
-                if ($this->M_tps->importCsvData($filePath)) {
-                    // Impor berhasil
-                    $this->session->set_flashdata('sukses', ' Import Berhasil !');
-                    unlink($filePath);
-                    redirect('admin'); // Ganti 'products' dengan halaman yang sesuai
-                } else {
-                    // Impor gagal
-                    $this->session->set_flashdata('gagal', ' Import Berhasil !');
+         // Load library dan helper CodeIgniter yang diperlukan
+        $this->load->helper('url');
+        $this->load->helper('form');
+
+        // Konfigurasi upload file
+        $config['upload_path'] = './csv/';
+        $config['allowed_types'] = 'xlsx|xls';
+        $config['max_size'] = 10240; // 10MB
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+
+        // Proses upload file
+        if (!$this->upload->do_upload('mentahTPS')) {
+            $error = array('error' => $this->upload->display_errors());
+            print_r($error);
+            return;
+        }
+
+        // Dapatkan informasi file yang diunggah
+        $upload_data = $this->upload->data();
+        $fileTarget = $upload_data['full_path'];
+
+        // Load library PhpSpreadsheet
+        $spreadsheet = IOFactory::load($fileTarget);
+        $sheet = $spreadsheet->getActiveSheet();
+        $array = $sheet->toArray();
+
+        $kodekabupaten = null;
+        $kodekecamatan = null;
+        $kodekelurahan = null;
+        foreach (array_slice($array, 10) as $data) {
+            $kabupaten = $data[1];
+            $kecamatan = $data[2];
+            $kelurahan = $data[3];
+
+
+            if (($kabupaten != "")) {
+                $ambilDetailkabupaten = $this->db->query("SELECT * FROM `kabupaten` WHERE `nama_kab` LIKE '%$kabupaten%'");
+                $detailkabupaten = $ambilDetailkabupaten->row_array();
+                if ($detailkabupaten && isset($detailkabupaten['kode_kab'])) {
+                    $kodekabupaten = $detailkabupaten['kode_kab'];
                 }
-            } else {
-                // Error upload file
-                $data['error'] = $this->upload->display_errors();
+            }
+            if (($kecamatan != "")) {
+                $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE `nama_kec` LIKE '%$kecamatan%'");
+                $detailkecamatan = $ambilDetailkecamatan->row_array();
+                if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
+                    $kodekecamatan = $detailkecamatan['kode_kec'];
+                }
+            }
+            if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
+                $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE `nama_kel` LIKE '%$kelurahan%'");
+                $detailkelurahan = $ambilDetailKelurahan->row_array();
+                if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
+                    $kodekelurahan = $detailkelurahan['kode_kel'];
+                }
+            }
+
+            if (($data[4] != "") && ($data[5] != "") && ($data[6] != "")) {
+                $nomorTPS = $data[4];
+                $potensiAlamatTPS = $this->db->escape_str($data[5]);
+                if (strpos($data[6], ',') !== false) {
+                    // Jika ada koma, gunakan pendekatan dengan explode
+                    $lokasi = explode(",", $data[6]);
+                    $latitude = $lokasi[0];
+                    $longitude = $lokasi[1];
+                } else {
+                    // Jika tidak ada koma, gunakan pendekatan dengan preg_match
+                    preg_match('/([+-]?\d+\.\d+)\s+([+-]?\d+\.\d+)/', $data[6], $matches);
+                    $latitude = isset($matches[1]) ? $matches[1] : null;
+                    $longitude = isset($matches[2]) ? $matches[2] : null;
+                }
+                $data = array(
+                    'kode_kab' => $kodekabupaten,
+                    'kode_kec' => $kodekecamatan,
+                    'kode_kel' => $kodekelurahan,
+                    'nama_tps' => $nomorTPS,
+                    'alamat' => $potensiAlamatTPS,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude
+                );
+
+                // var_dump($data);
+                error_reporting(0);
+                // die();
+                $this->M_tps->add($data);
             }
         }
-        $data = array(
-            'title'=>'Sistem Informasi ...',
-            'title2'=>'Data TPS',
-            'user' => 'Putra Nugraha',
-            'isi'   =>  'admin/gis/v_home',
-            'map' => $this->M_tps->allData(),
-            'kel' => $this->M_kel->allData(),
-            'kab' => $this->M_kab->allData(),
-            'kec' => $this->M_kec->allData()
-        );
-        // Load view untuk menampilkan form impor
-        $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        // die();
+
+        // Hapus file yang diunggah setelah selesai diproses
+        $this->session->set_flashdata('sukses', ' Import Berhasil !');
+        unlink($fileTarget);
+        redirect('admin');
     }
 
     public function unduh_file($nama_file) {
@@ -200,9 +335,39 @@ class Admin extends CI_Controller {
             echo "File tidak ditemukan";
         }
     }
-    
-    public function detail() {
-        echo json_encode($this->M_tps->get_detail_modal($_POST['id']));
+
+    public function detail($id)
+    {
+         //user data from session
+	    $data = $this->session->userdata;
+	    if(empty($data)){
+	        redirect(site_url().'main/login/');
+	    }
+
+	    //check user level
+	    if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
+	    $dataLevel = $this->userlevel->checkLevel($data['role']);
+	    //check user level
+	    
+        if(empty($this->session->userdata['email'])){
+            redirect(site_url().'main/login/');
+        }else{
+            $data = array(
+                'title'=>'Sistem Informasi ...',
+                'title2'=>'Data TPS',
+                'user' => $this->session->userdata['first_name'],
+                'isi'   =>  'admin/gis/v_detail',
+                'map' => $this->M_tps->get_detail_modal($id),
+                'kel' => $this->M_kel->allData(),
+                'kab' => $this->M_kab->allData(),
+                'kec' => $this->M_kec->allData(),
+                'dataLevel' => $dataLevel
+            );
+            // var_dump($data);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
     }
 
 }

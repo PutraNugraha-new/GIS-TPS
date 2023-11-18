@@ -26,6 +26,7 @@ class Home extends CI_Controller {
             'kec' => $this->M_kec->allData(),
             'kel' => $this->M_kel->allData(),
             'jumlah' => $this->M_tps->count_tps_per_kabupaten(),
+            'jumlah_kec' => $this->M_tps->count_tps_per_kecamatan(),
         );
         // var_dump($data['map']);
         $this->load->view('layout/v_wrapper', $data, FALSE);

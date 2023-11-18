@@ -516,6 +516,14 @@ $config['time_reference'] = 'local';
 */
 $config['rewrite_short_tags'] = FALSE;
 
+$config['roles'] = array('4', '1');
+$config['status'] = array('pending', 'approved');
+$config['banned_users'] = array('unban', 'ban');
+
+$config['register'] = 'simpandrive803@gmail.com';
+$config['forgot'] = 'simpandrive803@gmail.com';
+
+
 /*
 |--------------------------------------------------------------------------
 | Reverse Proxy IPs
