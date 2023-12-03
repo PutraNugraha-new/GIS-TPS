@@ -200,7 +200,7 @@
                     <br>
                     <strong> Kelurahan</strong> ${item.nama_kel}
                     <br>
-                    <strong> Alamat</strong> ${item.alamat}
+                    <strong> Alamat Potensial TPS</strong> ${item.alamat}
                     <br>
                     <a href="https://www.google.com/maps/search/?api=1&query=${formattedLatitude},${formattedLongitude}" target="_blank">Jelajahi TPS</a>`;
 
