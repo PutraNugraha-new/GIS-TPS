@@ -1,3 +1,8 @@
+<div class="info">
+    <marquee behavior="scroll" direction="left" loop="">
+        <p>Ingat...!! Pemilu Serentak, Rabu 14 Februari 2024... Sarana Integrasi Bangsa</p>
+    </marquee>
+</div>
 <div class="backdrop">
     <img src="<?= base_url() ?>assets/user/image/Vector.png" alt="">
 </div>

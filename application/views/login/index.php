@@ -76,6 +76,7 @@
                 echo form_submit(array('value'=>'Login', 'class'=>'btn btn-danger mx-auto btn-block')); ?>
             <?php echo form_close(); ?>
         </div>
+        <a href="<?= base_url('') ?>">Back to Website</a>
         <hr>
         <div class="footer">
         <i class="fas fa-copyright"></i> Copyright - 2023 | KPU-Provinsi-Kalteng

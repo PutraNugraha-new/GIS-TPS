@@ -96,3 +96,44 @@ window.addEventListener('scroll', function() {
   
 
 // close floatin button
+
+// countdown
+ // Fungsi untuk memulai countdown
+ function startCountdown() {
+    // Tentukan tanggal akhir countdown (misalnya, 1 Januari 2024)
+    var endDate = new Date("Feb 14, 2024 00:00:00").getTime();
+
+    // Perbarui countdown setiap 1 detik
+    var x = setInterval(function () {
+        // Dapatkan tanggal dan waktu saat ini
+        var now = new Date().getTime();
+
+        // Hitung selisih waktu antara sekarang dan tanggal akhir
+        var distance = endDate - now;
+
+        // Hitung hari, jam, menit, dan detik
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+         // Format output sesuai dengan format yang diinginkan
+        var formattedOutput = days + " hari " +
+        (hours < 10 ? "0" : "") + hours + " jam " +
+        (minutes < 10 ? "0" : "") + minutes + " menit " +
+        (seconds < 10 ? "0" : "") + seconds + " detik";
+
+        // Tampilkan hasil countdown di elemen dengan ID "countdown"
+        $("#countdown").html(formattedOutput);
+
+        // Jika waktu sudah habis, tampilkan pesan
+        if (distance < 0) {
+            clearInterval(x);
+            $("#countdown").html("Pemilu Serentak Sudah Tiba!");
+        }
+    }, 1000); // 1000 milidetik = 1 detik
+}
+
+// Panggil fungsi untuk memulai countdown
+startCountdown();
+// close countdown

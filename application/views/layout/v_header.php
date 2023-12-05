@@ -21,6 +21,7 @@
                         </li>
                     </ul>
                 </div>
+                <div id="countdown"></div>
         </nav>
-    </div>    
+    </div>
 </div>
