@@ -36,7 +36,7 @@
 <script>
   AOS.init();
 </script>
-<script src="<?= base_url() ?>assets/user/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="<?= base_url() ?>assets/user/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
 <script src="<?= base_url() ?>/assets/user/js/leaflet-routing-machine.js"></script>
 <script src="<?= base_url() ?>/assets/user/js/Control.Geocoder.js"></script>
 <!-- <script src="<?= base_url() ?>/assets/js/leaftlet-user.js"></script>     -->

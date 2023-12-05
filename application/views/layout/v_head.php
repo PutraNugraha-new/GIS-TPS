@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>SILOKAT | KPU Provinsi Kalimantan Tengah</title>
-        <link href="<?= base_url() ?>assets/user/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link href="<?= base_url() ?>assets/user/css/bootstrap.min.css" rel="stylesheet" integrity="" crossorigin="anonymous">
         <link href="<?= base_url() ?>assets/user/css/custom.css" rel="stylesheet">
         <link href="<?= base_url() ?>assets/user/js/custom.js" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
