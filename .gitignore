@@ -8,6 +8,11 @@ application/logs/*
 
 !application/*/.htaccess
 
+# Ignore vendor folder
+/vendor/
+# Ignore csv folder
+/csv/
+
 composer.lock
 tests/mocks/database/ci_test.sqlite
 
@@ -15,10 +20,6 @@ user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
-
-# Ignore vendor folder
-/vendor/
-/csv/
 
 # IDE Files
 #-------------------------
