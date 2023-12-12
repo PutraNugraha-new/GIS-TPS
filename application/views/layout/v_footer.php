@@ -247,7 +247,7 @@
             };
 
             // Lakukan permintaan Ajax ke file PHP yang menangani data
-            xhr.open('GET', '<?= base_url("admin/getMarkers") ?>', true);
+            xhr.open('GET', '<?= base_url("home/getMarkers") ?>', true);
             xhr.send();
         }
 
