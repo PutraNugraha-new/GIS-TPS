@@ -35,9 +35,12 @@
         <link rel="stylesheet" href="<?= base_url() ?>/assets/user/css/leaflet-panel-layers.css" />
 
     <style>
-        #map { 
+       #map { 
             height: 70vh;
-            /* width:50%; */
+            border-radius:5px; 
+        }
+        #edit-map { 
+            height: 70vh;
             border-radius:5px; 
         }
         .custom-icon {
@@ -56,6 +59,7 @@
         .icon-number {
             font-weight: bold;
         }
+
         /* Gaya umum untuk klaster */
         .custom-cluster-icon {
         background-color: rgba(0, 0, 0, 0.6);
@@ -76,10 +80,12 @@
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            line-height: 40px;
+            /* line-height: 40px; */
             text-align: center;
             font-weight: bold;
             font-size: 14px;
+            /* color:red; */
+            margin-top:-2em;
         }
 
         .kecamatan-cluster-icon {
@@ -94,6 +100,12 @@
         font-weight: bold;
         /* margin :2px; */
     }
+        .small-font {
+            font-size: 11pt;
+        }
+        .statistik h6{
+            font-size:11pt;
+        }
 
         
     </style>

@@ -46,7 +46,7 @@
         
 
 
-    <style>
+        <style>
         #map { 
             height: 70vh;
             border-radius:5px; 
@@ -92,10 +92,12 @@
             border-radius: 50%;
             width: 40px;
             height: 40px;
-            line-height: 40px;
+            /* line-height: 40px; */
             text-align: center;
             font-weight: bold;
             font-size: 14px;
+            /* color:red; */
+            margin-top:-2em;
         }
 
         .kecamatan-cluster-icon {
@@ -117,7 +119,6 @@
             font-size:11pt;
         }
         
-
     </style>
 
 </head>

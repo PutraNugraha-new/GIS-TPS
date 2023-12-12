@@ -47,7 +47,7 @@
     });
 </script>
 <script>   
-    function formatCoordinates(latitude, longitude) {
+     function formatCoordinates(latitude, longitude) {
         // Pengecekan apakah koordinat sudah dalam format yang benar
         const validLatitudePattern = /^-?\d+\.\d+$/;
         const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
@@ -81,42 +81,39 @@
         };
     }
 
-    function filterMarkersByKelurahanAndNumber(kelurahan, tpsNumber) {
-        filteredMarkers = [];
+        function filterMarkersByKelurahanAndNumber(kelurahan, tpsNumber) {
+            filteredMarkers = [];
 
-        for (var kodeKab in markers) {
-            markers[kodeKab].singleMarkers.eachLayer(function(marker) {
-                var markerKelurahan = marker.options.kode_kel;
-                var markerTpsNumber = marker.options.nama_tps ? marker.options.nama_tps.toString() : '';
+            for (var kodeKab in markers) {
+                markers[kodeKab].singleMarkers.eachLayer(function(marker) {
+                    var markerKelurahan = marker.options.kode_kel;
+                    var markerTpsNumber = marker.options.nama_tps ? marker.options.nama_tps.toString() : '';
 
-                if ((kelurahan === '' || kelurahan === markerKelurahan) &&
-                    (tpsNumber === '' || markerTpsNumber === tpsNumber)) {
-                    marker.addTo(map);
-                    filteredMarkers.push(marker); // Tambahkan marker yang cocok ke dalam filteredMarkers
-                } else {
-                    map.removeLayer(marker);
-                }
-            });
+                    if ((kelurahan === '' || kelurahan === markerKelurahan) &&
+                        (tpsNumber === '' || markerTpsNumber === tpsNumber)) {
+                        marker.addTo(map);
+                        filteredMarkers.push(marker); // Tambahkan marker yang cocok ke dalam filteredMarkers
+                    } else {
+                        map.removeLayer(marker);
+                    }
+                });
+            }
         }
-    }
 
 
+        var latLng = [-1.9673044045635462, 113.74932199263436];
+        var map = L.map('map').setView(latLng, 6);
+        layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 21
+        }).addTo(map);
 
+        var markers = {}; // Objek untuk menyimpan marker-cluster
+        var currentZoom = map.getZoom(); // Menyimpan tingkat zoom saat ini
+        var kecamatanMarkers = {};
+        var filteredMarkers = [];
 
-    var latLng = [-1.9673044045635462, 113.74932199263436];
-    var map = L.map('map').setView(latLng, 10);
-    layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 21
-    }).addTo(map);
-
-    var markers = {}; // Objek untuk menyimpan marker-cluster
-    var currentZoom = map.getZoom(); // Menyimpan tingkat zoom saat ini
-    var kecamatanMarkers = {};
-    var filteredMarkers = [];
-
-
-    // Fungsi untuk mengganti ikon cluster berdasarkan 'kode_kab' pada tingkat zoom 7
+         // Fungsi untuk mengganti ikon cluster berdasarkan 'kode_kab' pada tingkat zoom 7
     function updateClusterIcons() {
         for (var kodeKab in markers) {
             (function(kodeKab) {
@@ -129,8 +126,8 @@
                 kabCluster.options.iconCreateFunction = function(cluster) {
                     return L.divIcon({
                         className: 'cluster-icon',
-                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="35">' + cluster.getChildCount(),
-                        iconSize: [20, 20]
+                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="30">' + cluster.getChildCount(),
+                        iconSize: [25, 10]
                     });
                 };
 
@@ -160,7 +157,8 @@
     }
 
 
-    function updateMarkersWithData(data) {
+        // Fungsi untuk memperbarui penanda pada peta
+        function updateMarkersWithData(data) {
             // Hapus marker yang ada
             for (var kodeKab in markers) {
                 map.removeLayer(markers[kodeKab].cluster);
@@ -200,9 +198,9 @@
                     <br>
                     <strong> Kelurahan</strong> ${item.nama_kel}
                     <br>
-                    <strong> Alamat Potensial TPS</strong> ${item.alamat}
+                    <strong> Alamat</strong> ${item.alamat}
                     <br>
-                    <a href="https://www.google.com/maps/search/?api=1&query=${formattedLatitude},${formattedLongitude}" target="_blank">Jelajahi TPS</a>`;
+                    <a href="https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}" target="_blank">Jelajahi TPS</a>`;
 
                 var lokasi = L.marker([formattedLatitude, formattedLongitude], {
                     icon: customIcon,
@@ -249,21 +247,21 @@
             };
 
             // Lakukan permintaan Ajax ke file PHP yang menangani data
-            xhr.open('GET', '<?= base_url("home/getMarkers") ?>', true);
+            xhr.open('GET', '<?= base_url("admin/getMarkers") ?>', true);
             xhr.send();
         }
 
         // Panggil fungsi untuk memuat data pada awal
         loadDataWithAjax();
 
-    // Tambahkan event listener untuk perubahan tingkat zoom
-    map.on('zoomend', function() {
-        var newZoom = map.getZoom();
-        if (newZoom !== currentZoom) {
-            currentZoom = newZoom;
-            updateClusterIcons();
-        }
-    });
+        // Tambahkan event listener untuk perubahan tingkat zoom
+        map.on('zoomend', function() {
+            var newZoom = map.getZoom();
+            if (newZoom !== currentZoom) {
+                currentZoom = newZoom;
+                updateClusterIcons();
+            }
+        });
     // Tambahkan event listener untuk perubahan pilihan filter
     document.getElementById('kodeKabFilter').addEventListener('change', function() {
         var selectedKodeKab = this.value;

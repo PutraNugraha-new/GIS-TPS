@@ -221,102 +221,111 @@ class Admin extends CI_Controller {
 	}
 
     public function importData() {
-         // Load library dan helper CodeIgniter yang diperlukan
-        $this->load->helper('url');
-        $this->load->helper('form');
+        // Load library dan helper CodeIgniter yang diperlukan
+       $this->load->helper('url');
+       $this->load->helper('form');
 
-        // Konfigurasi upload file
-        $config['upload_path'] = './csv/';
-        $config['allowed_types'] = 'xlsx|xls';
-        $config['max_size'] = 10240; // 10MB
+       // Konfigurasi upload file
+       $config['upload_path'] = './csv/';
+       $config['allowed_types'] = 'xlsx|xls';
+       $config['max_size'] = 10240; // 10MB
 
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config);
+       $this->load->library('upload', $config);
+       $this->upload->initialize($config);
 
-        // Proses upload file
-        if (!$this->upload->do_upload('mentahTPS')) {
-            $error = array('error' => $this->upload->display_errors());
-            print_r($error);
-            return;
-        }
+       // Proses upload file
+       if (!$this->upload->do_upload('mentahTPS')) {
+           $error = array('error' => $this->upload->display_errors());
+           print_r($error);
+           return;
+       }
 
-        // Dapatkan informasi file yang diunggah
-        $upload_data = $this->upload->data();
-        $fileTarget = $upload_data['full_path'];
+       // Dapatkan informasi file yang diunggah
+       $upload_data = $this->upload->data();
+       $fileTarget = $upload_data['full_path'];
 
-        // Load library PhpSpreadsheet
-        $spreadsheet = IOFactory::load($fileTarget);
-        $sheet = $spreadsheet->getActiveSheet();
-        $array = $sheet->toArray();
+       // Load library PhpSpreadsheet
+       $spreadsheet = IOFactory::load($fileTarget);
+       $sheet = $spreadsheet->getActiveSheet();
+       $array = $sheet->toArray();
 
-        $kodekabupaten = null;
-        $kodekecamatan = null;
-        $kodekelurahan = null;
-        foreach (array_slice($array, 10) as $data) {
-            $kabupaten = $data[1];
-            $kecamatan = $data[2];
-            $kelurahan = $data[3];
+       $kodekabupaten = null;
+       $kodekecamatan = null;
+       $kodekelurahan = null;
+       foreach (array_slice($array, 1) as $data) {
+           $kabupaten = $data[0];
+           $kecamatan = $data[1];
+           $kelurahan = $data[2];
 
 
-            if (($kabupaten != "")) {
-                $ambilDetailkabupaten = $this->db->query("SELECT * FROM `kabupaten` WHERE `nama_kab` LIKE '%$kabupaten%'");
-                $detailkabupaten = $ambilDetailkabupaten->row_array();
-                if ($detailkabupaten && isset($detailkabupaten['kode_kab'])) {
-                    $kodekabupaten = $detailkabupaten['kode_kab'];
-                }
-            }
-            if (($kecamatan != "")) {
-                $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE `nama_kec` LIKE '%$kecamatan%'");
-                $detailkecamatan = $ambilDetailkecamatan->row_array();
-                if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
-                    $kodekecamatan = $detailkecamatan['kode_kec'];
-                }
-            }
-            if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
-                $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE `nama_kel` LIKE '%$kelurahan%'");
-                $detailkelurahan = $ambilDetailKelurahan->row_array();
-                if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
-                    $kodekelurahan = $detailkelurahan['kode_kel'];
-                }
-            }
+           if (($kabupaten != "")) {
+               $ambilDetailkabupaten = $this->db->query("SELECT * FROM `kabupaten` WHERE LOWER (`nama_kab`) LIKE LOWER ('%$kabupaten%')");
+               $detailkabupaten = $ambilDetailkabupaten->row_array();
+               if ($detailkabupaten && isset($detailkabupaten['kode_kab'])) {
+                   $kodekabupaten = $detailkabupaten['kode_kab'];
+               }
+           }
+           if (($kecamatan != "")) {
+               $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('%$kecamatan%')");
+               $detailkecamatan = $ambilDetailkecamatan->row_array();
+               if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
+                   $kodekecamatan = $detailkecamatan['kode_kec'];
+               }
+           }
+           if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
+               $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE LOWER (`nama_kel`) LIKE LOWER ('%$kelurahan%')");
+               $detailkelurahan = $ambilDetailKelurahan->row_array();
+               if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
+                   $kodekelurahan = $detailkelurahan['kode_kel'];
+               }
+           }
 
-            if (($data[4] != "") && ($data[5] != "") && ($data[6] != "")) {
-                $nomorTPS = $data[4];
-                $potensiAlamatTPS = $this->db->escape_str($data[5]);
-                if (strpos($data[6], ',') !== false) {
-                    // Jika ada koma, gunakan pendekatan dengan explode
-                    $lokasi = explode(",", $data[6]);
-                    $latitude = $lokasi[0];
-                    $longitude = $lokasi[1];
-                } else {
-                    // Jika tidak ada koma, gunakan pendekatan dengan preg_match
-                    preg_match('/([+-]?\d+\.\d+)\s+([+-]?\d+\.\d+)/', $data[6], $matches);
-                    $latitude = isset($matches[1]) ? $matches[1] : null;
-                    $longitude = isset($matches[2]) ? $matches[2] : null;
-                }
-                $data = array(
-                    'kode_kab' => $kodekabupaten,
-                    'kode_kec' => $kodekecamatan,
-                    'kode_kel' => $kodekelurahan,
-                    'nama_tps' => $nomorTPS,
-                    'alamat' => $potensiAlamatTPS,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude
-                );
+           if (($data[3] != "") && ($data[4] != "") && ($data[5] != "") && ($data[6] != "")) {
+               $nomorTPS = $data[3];
+               $potensiAlamatTPS = $this->db->escape_str($data[4]);
+               $latitude = $data[5];
+               $longitude = $data[6];
+               // $data =[
+               //     'lat' => $data[5],
+               //     'long' => $data[6]
+               // ];
+               // if (strpos($data[7], ',') !== false) {
+               //     // Jika ada koma, gunakan pendekatan dengan explode
+               //     $lokasi = explode(",", $data[7]);
+               //     $latitude = $lokasi[0];
+               //     $longitude = $lokasi[1];
+               // } else {
+               //     // Jika tidak ada koma, gunakan pendekatan dengan preg_match
+               //     preg_match('/([+-]?\d+\.\d+)\s+([+-]?\d+\.\d+)/', $data[7], $matches);
+               //     $latitude = isset($matches[1]) ? $matches[1] : null;
+               //     $longitude = isset($matches[2]) ? $matches[2] : null;
+               // }
 
-                // var_dump($data);
-                error_reporting(0);
-                // die();
-                $this->M_tps->add($data);
-            }
-        }
-        // die();
+               
 
-        // Hapus file yang diunggah setelah selesai diproses
-        $this->session->set_flashdata('sukses', ' Import Berhasil !');
-        unlink($fileTarget);
-        redirect('admin');
-    }
+               $data = array(
+                   'kode_kab' => $kodekabupaten,
+                   'kode_kec' => $kodekecamatan,
+                   'kode_kel' => $kodekelurahan,
+                   'nama_tps' => $nomorTPS,
+                   'alamat' => $potensiAlamatTPS,
+                   'latitude' => $latitude,
+                   'longitude' => $longitude
+               );
+
+               error_reporting(0);
+               $this->M_tps->add($data);
+           }
+           // var_dump($data);
+           // die();
+       }
+       // die();
+
+       // Hapus file yang diunggah setelah selesai diproses
+       $this->session->set_flashdata('sukses', ' Import Berhasil !');
+       unlink($fileTarget);
+       redirect('admin');
+   }
 
     public function unduh_file($nama_file) {
         // Tentukan path lengkap ke file yang akan diunduh

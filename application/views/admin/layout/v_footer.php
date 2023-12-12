@@ -1,5 +1,5 @@
 
-    </section>
+</section>
 </div>
 
             <footer>
@@ -87,7 +87,7 @@
 
 
         var latLng = [-1.9673044045635462, 113.74932199263436];
-        var map = L.map('map').setView(latLng, 10);
+        var map = L.map('map').setView(latLng, 6);
         layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 21
@@ -111,8 +111,8 @@
                 kabCluster.options.iconCreateFunction = function(cluster) {
                     return L.divIcon({
                         className: 'cluster-icon',
-                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="35">' + cluster.getChildCount(),
-                        iconSize: [20, 20]
+                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="30">' + cluster.getChildCount(),
+                        iconSize: [25, 10]
                     });
                 };
 
@@ -232,7 +232,7 @@
             };
 
             // Lakukan permintaan Ajax ke file PHP yang menangani data
-            xhr.open('GET', '<?= base_url("home/getMarkers") ?>', true);
+            xhr.open('GET', '<?= base_url("admin/getMarkers") ?>', true);
             xhr.send();
         }
 
