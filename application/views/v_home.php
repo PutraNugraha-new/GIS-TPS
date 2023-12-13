@@ -29,14 +29,14 @@
 <div class="jumlah-tps">
     <div class="row my-5 m-0" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
         <div class="col-lg-10 text-center mx-auto">
-            <h3>Jumlah TPS di Tiap Kecamatan</h3>
+            <h3>Jumlah TPS di Tiap Kabupaten</h3>
         </div>
     </div>
     <div class="wrapper container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
         <ul class="carousel">
-            <?php foreach($jumlah_kec as $data): ?>
+            <?php foreach($jumlah as $data): ?>
             <li class="card">
-                <p><?= $data->nama_kec ?></p>
+                <p><?= $data->nama_kab ?></p>
                 <p><?= $data->total_tps ?></p>
                 <p>TPS</p>
             </li>
