@@ -118,10 +118,10 @@ window.addEventListener('scroll', function() {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
          // Format output sesuai dengan format yang diinginkan
-        var formattedOutput = days + " hari " +
+        var formattedOutput = "Tinggal " + days + " hari " +
         (hours < 10 ? "0" : "") + hours + " jam " +
         (minutes < 10 ? "0" : "") + minutes + " menit " +
-        (seconds < 10 ? "0" : "") + seconds + " detik";
+        (seconds < 10 ? "0" : "") + seconds + " detik" + " Lagi !!";
 
         // Tampilkan hasil countdown di elemen dengan ID "countdown"
         $("#countdown").html(formattedOutput);
