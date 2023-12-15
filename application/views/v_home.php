@@ -78,7 +78,7 @@
                 </select>
             </div>
             <div class="col-md-3 form-group mb-3">
-                <input type="text" id="tpsNameFilter" class="form-control" placeholder="Masukkan Nomor TPS" disabled>
+                <input type="text" id="tpsNameFilter" class="form-control" placeholder="Nomor TPS dengan format 1,2,3.." disabled>
             </div>
         </div>
         <div class="row">

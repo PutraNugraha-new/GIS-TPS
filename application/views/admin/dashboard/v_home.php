@@ -88,12 +88,40 @@
                     <div class="card">
                         <div class="card-body py-4 px-4">
                             <h4>
-                                <div id="greeting"></div>
+                                <div id="greeting"></div> <?= $user ?>
                             </h4>
                         </div>
                     </div>
                 </div>
             </section>
+        </div>
+        <div class="col-md-1">
+            <h4 class="text-secondary">Filter :</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKabFilter" class="form-select">
+                    <option value="">Semua Kabupaten/kota</option>
+                    <!-- Tambahkan pilihan berdasarkan kode_kab yang ada di database -->
+                    <?php foreach($nama_kab as $data): ?>
+                        <option value="<?= $data->kode_kab ?>"><?= $data->nama_kab ?></option>
+                    <?php endforeach; ?>
+                    <!-- ... tambahkan pilihan lainnya sesuai kebutuhan -->
+                </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKecFilter" name="kodeKecFilter" class="form-select" disabled>
+                    <option value="">-- Pilih Kecamatan --</option>
+                </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <select id="kodeKelFilter" name="kodeKelFilter" class="form-select" disabled>
+                    <option value="">-- Pilih Kelurahan/desa --</option>
+                </select>
+            </div>
+            <div class="col-md-3 form-group mb-3">
+                <input type="text" id="tpsNameFilter" class="form-control" placeholder="Nomor TPS dengan format 1,2,3.." disabled>
+            </div>
         </div>
         <div id="map"></div>
     </div>

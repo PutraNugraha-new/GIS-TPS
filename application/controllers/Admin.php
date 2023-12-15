@@ -227,7 +227,7 @@ class Admin extends CI_Controller {
 
        // Konfigurasi upload file
        $config['upload_path'] = './csv/';
-       $config['allowed_types'] = 'xlsx|xls';
+       $config['allowed_types'] = 'xlsx';
        $config['max_size'] = 10240; // 10MB
 
        $this->load->library('upload', $config);
@@ -259,21 +259,21 @@ class Admin extends CI_Controller {
 
 
            if (($kabupaten != "")) {
-               $ambilDetailkabupaten = $this->db->query("SELECT * FROM `kabupaten` WHERE LOWER (`nama_kab`) LIKE LOWER ('%$kabupaten%')");
+               $ambilDetailkabupaten = $this->db->query("SELECT * FROM `kabupaten` WHERE LOWER (`nama_kab`) LIKE LOWER ('$kabupaten')");
                $detailkabupaten = $ambilDetailkabupaten->row_array();
                if ($detailkabupaten && isset($detailkabupaten['kode_kab'])) {
                    $kodekabupaten = $detailkabupaten['kode_kab'];
                }
            }
            if (($kecamatan != "")) {
-               $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('%$kecamatan%')");
+               $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('$kecamatan')");
                $detailkecamatan = $ambilDetailkecamatan->row_array();
                if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
                    $kodekecamatan = $detailkecamatan['kode_kec'];
                }
            }
            if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
-               $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE LOWER (`nama_kel`) LIKE LOWER ('%$kelurahan%')");
+               $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE LOWER (`nama_kel`) LIKE LOWER ('$kelurahan')");
                $detailkelurahan = $ambilDetailKelurahan->row_array();
                if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
                    $kodekelurahan = $detailkelurahan['kode_kel'];
@@ -315,11 +315,11 @@ class Admin extends CI_Controller {
 
                error_reporting(0);
                $this->M_tps->add($data);
-           }
-           // var_dump($data);
-           // die();
-       }
-       // die();
+            }
+            // var_dump($data);
+            // die();
+            // die();
+        }
 
        // Hapus file yang diunggah setelah selesai diproses
        $this->session->set_flashdata('sukses', ' Import Berhasil !');

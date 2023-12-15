@@ -126,8 +126,10 @@
                 kabCluster.options.iconCreateFunction = function(cluster) {
                     return L.divIcon({
                         className: 'cluster-icon',
-                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="30">' + cluster.getChildCount(),
+                        html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="30">',
                         iconSize: [25, 10]
+                        // html: '<img src="' + kabIconUrl + '" alt="Cluster Icon" width="35" height="30">' + cluster.getChildCount(),
+                        // iconSize: [25, 10]
                     });
                 };
 
