@@ -49,13 +49,19 @@
 <script>   
      function formatCoordinates(latitude, longitude) {
         // Pengecekan apakah koordinat sudah dalam format yang benar
+        const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
         const validLatitudePattern = /^-?\d+\.\d+$/;
-        const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
+        const validLongitudePattern = /^-?\d+\.\d+$/;
 
-        if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
+        const coordinateMatch = `${latitude},${longitude}`.match(coordinatePattern);
+
+        if (coordinateMatch) {
+            const numericLatitude = coordinateMatch[1] * (coordinateMatch[2] === 'S' ? -1 : 1);
+            const numericLongitude = coordinateMatch[3] * (coordinateMatch[4] === 'W' ? -1 : 1);
+
             return {
-                formattedLatitude: latitude,
-                formattedLongitude: longitude
+                formattedLatitude: numericLatitude.toFixed(8),
+                formattedLongitude: numericLongitude.toFixed(8)
             };
         }
 

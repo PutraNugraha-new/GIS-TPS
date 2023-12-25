@@ -35,7 +35,7 @@
                                     <label>Kecamatan</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="choices form-select" id="edit_kecamatan" name="kode_kec" disabled required>
+                                    <select class="choices form-select" id="edit_kecamatan" name="kode_kec" readonly required>
                                         <option value="<?= $map->kode_kec ?>"><?= $map->nama_kec ?></option>
                                         <!-- <?php foreach($kec as $k): ?>
                                             <option value="<?= $k->kode_kec ?>"><?= $k->nama_kec ?></option>
@@ -47,7 +47,7 @@
                                     <label>Kelurahan</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <select class="choices form-select" id="edit_kelurahan" name="kode_kel" disabled required>
+                                    <select class="choices form-select" id="edit_kelurahan" name="kode_kel" readonly required>
                                         <option value="<?= $map->kode_kel ?>"><?= $map->nama_kel ?></option>
                                         <!-- <?php foreach($kel as $k): ?>
                                             <option value="<?= $k->kode_kel ?>"><?= $k->nama_kel ?></option>
@@ -97,13 +97,19 @@
 <script>
     function formatCoordinates(latitude, longitude) {
         // Pengecekan apakah koordinat sudah dalam format yang benar
+        const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
         const validLatitudePattern = /^-?\d+\.\d+$/;
-        const validLongitudePattern = /^-?\d+\.\d+$/; // Updated pattern to allow negative longitude
+        const validLongitudePattern = /^-?\d+\.\d+$/;
 
-        if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
+        const coordinateMatch = `${latitude},${longitude}`.match(coordinatePattern);
+
+        if (coordinateMatch) {
+            const numericLatitude = coordinateMatch[1] * (coordinateMatch[2] === 'S' ? -1 : 1);
+            const numericLongitude = coordinateMatch[3] * (coordinateMatch[4] === 'W' ? -1 : 1);
+
             return {
-                formattedLatitude: latitude,
-                formattedLongitude: longitude
+                formattedLatitude: numericLatitude.toFixed(8),
+                formattedLongitude: numericLongitude.toFixed(8)
             };
         }
 
@@ -143,6 +149,8 @@
 
                 L.marker([formattedLatitude, formattedLongitude]).addTo(mapp)
         
+        console.log(formattedLatitude);
+        console.log(formattedLongitude);
         // form select kecamatan
         $("#edit_kabupaten").change(function() {
                 var id_kabupaten = $(this).val();
@@ -150,7 +158,7 @@
                 $("#edit_kelurahan").empty();
                 $("#edit_kecamatan").append('<option>-- Pilih Kecamatan -- </option>');
                 $("#edit_kelurahan").append('<option>-- Pilih Kelurahan -- </option>');
-                $("#edit_kecamatan").prop('disabled', false);
+                $("#edit_kecamatan").prop('readonly', false);
 
                 $.ajax({
                     url: "<?= base_url('Admin/get_kecamatan_by_kabupaten/'); ?>" + id_kabupaten,
@@ -169,7 +177,7 @@
             var id_kecamatan = $(this).val();
             $("#edit_kelurahan").empty();
             $("#edit_kelurahan").append('<option>-- Pilih Kelurahan -- </option>');
-            $("#edit_kelurahan").prop('disabled', false);
+            $("#edit_kelurahan").prop('readonly', false);
 
             $.ajax({
                 url: "<?= base_url('Admin/get_kelurahan_by_kecamatan/') ?>" + id_kecamatan,
