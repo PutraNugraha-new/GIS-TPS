@@ -161,6 +161,8 @@ class Admin extends CI_Controller {
                 'latitude'			=> $i->post('latitude'),
                 'longitude'			=> $i->post('longitude')
             );
+            // var_dump($data);
+            // die();
             $this->M_tps->edit($data);
             $this->session->set_flashdata('sukses', ' Data TPS Berhasil DIUPDATE !');
             redirect('admin', 'refresh');

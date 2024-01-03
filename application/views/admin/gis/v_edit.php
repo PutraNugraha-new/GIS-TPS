@@ -5,7 +5,7 @@
                 <div class="card-body">
                 <?php
                 $atribut = 'class="form form-horizontal"';
-                echo form_open_multipart('admin/add', $atribut);
+                echo form_open_multipart('admin/update/'.$map->id_tps, $atribut);
                 ?>
                         <div class="form-body">
                             <div class="row">
