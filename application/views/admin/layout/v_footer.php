@@ -193,7 +193,7 @@
                     <br>
                     <strong> Alamat</strong> ${item.alamat}
                     <br>
-                    <a href="https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}" target="_blank">Jelajahi TPS</a>`;
+                    <a href="https://www.google.com/maps/search/?api=1&query=${formattedLatitude},${formattedLongitude}" target="_blank">Jelajahi TPS</a>`;
 
                 var lokasi = L.marker([formattedLatitude, formattedLongitude], {
                     icon: customIcon,
