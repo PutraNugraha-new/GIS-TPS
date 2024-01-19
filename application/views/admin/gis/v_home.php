@@ -18,10 +18,10 @@
                             <i class="bi bi-file-earmark-bar-graph-fill"></i>
                             Import Data
                         </a>
-                        <a href="admin/unduh_file/template-excel.xlsx" class="btn btn-info my-1">
+                        <!-- <a href="admin/unduh_file/template-excel.xlsx" class="btn btn-info my-1">
                         <i class="bi bi-file-earmark-arrow-down-fill"></i>
                             Download Template Excel
-                        </a>
+                        </a> -->
                     </div>
                     <!-- <div class="col-md-3">
                         <select class="form-select" name="kabupaten" id="kabupaten">

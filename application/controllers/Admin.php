@@ -312,8 +312,8 @@ class Admin extends CI_Controller {
                    'kode_kel' => $kodekelurahan,
                    'nama_tps' => $nomorTPS,
                    'alamat' => $potensiAlamatTPS,
-                   'latitude' => $latitude,
-                   'longitude' => $longitude
+                   'latitude' => '"$latitude"',
+                   'longitude' => '"$longitude"'
                );
 
                error_reporting(0);
