@@ -268,7 +268,7 @@ class Admin extends CI_Controller {
                }
            }
            if (($kecamatan != "")) {
-                $kecamatanLike = "%" . $kecamatan . "%";
+                $kecamatanLike = "%". $kecamatan . "%";
                 $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('$kecamatanLike')");
                 $detailkecamatan = $ambilDetailkecamatan->row_array();
                 if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
