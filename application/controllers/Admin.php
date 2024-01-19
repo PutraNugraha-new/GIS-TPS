@@ -268,20 +268,21 @@ class Admin extends CI_Controller {
                }
            }
            if (($kecamatan != "")) {
-               $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('$kecamatan')");
-               $detailkecamatan = $ambilDetailkecamatan->row_array();
-               if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
-                   $kodekecamatan = $detailkecamatan['kode_kec'];
-               }
-           }
-           if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
-               $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE LOWER (`nama_kel`) LIKE LOWER ('$kelurahan')");
-               $detailkelurahan = $ambilDetailKelurahan->row_array();
-               if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
-                   $kodekelurahan = $detailkelurahan['kode_kel'];
-               }
-           }
-
+                $kecamatanLike = "%" . $kecamatan . "%";
+                $ambilDetailkecamatan = $this->db->query("SELECT * FROM `kecamatan` WHERE LOWER (`nama_kec`) LIKE LOWER ('$kecamatanLike')");
+                $detailkecamatan = $ambilDetailkecamatan->row_array();
+                if ($detailkecamatan && isset($detailkecamatan['kode_kec'])) {
+                    $kodekecamatan = $detailkecamatan['kode_kec'];
+                }
+            }
+            if (($kelurahan != "") && ($kelurahan != "JUMLAH")) {
+                $kelurahanLike = "%" . $kelurahan . "%";
+                $ambilDetailKelurahan = $this->db->query("SELECT * FROM `kelurahan` WHERE LOWER (`nama_kel`) LIKE LOWER ('$kelurahanLike')");
+                $detailkelurahan = $ambilDetailKelurahan->row_array();
+                if ($detailkelurahan && isset($detailkelurahan['kode_kel'])) {
+                    $kodekelurahan = $detailkelurahan['kode_kel'];
+                }
+            }
            if (($data[3] != "") && ($data[4] != "") && ($data[5] != "") && ($data[6] != "")) {
                $nomorTPS = $data[3];
                $potensiAlamatTPS = $this->db->escape_str($data[4]);

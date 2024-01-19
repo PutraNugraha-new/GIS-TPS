@@ -33,44 +33,44 @@
 
     <script>
         function formatCoordinates(latitude, longitude) {
-        // Pengecekan apakah koordinat sudah dalam format yang benar
-        const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
-        const validLatitudePattern = /^-?\d+\.\d+$/;
-        const validLongitudePattern = /^-?\d+\.\d+$/;
+            // Pengecekan apakah koordinat sudah dalam format yang benar
+            const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
+            const validLatitudePattern = /^-?\d+\.\d+$/;
+            const validLongitudePattern = /^-?\d+\.\d+$/;
 
-        const coordinateMatch = `${latitude},${longitude}`.match(coordinatePattern);
+            const coordinateMatch = `${latitude},${longitude}`.match(coordinatePattern);
 
-        if (coordinateMatch) {
-            const numericLatitude = coordinateMatch[1] * (coordinateMatch[2] === 'S' ? -1 : 1);
-            const numericLongitude = coordinateMatch[3] * (coordinateMatch[4] === 'W' ? -1 : 1);
+            if (coordinateMatch) {
+                const numericLatitude = coordinateMatch[1] * (coordinateMatch[2] === 'S' ? -1 : 1);
+                const numericLongitude = coordinateMatch[3] * (coordinateMatch[4] === 'W' ? -1 : 1);
+
+                return {
+                    formattedLatitude: numericLatitude.toFixed(8),
+                    formattedLongitude: numericLongitude.toFixed(8)
+                };
+            }
+
+            // Jika koordinat perlu diformat
+            const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
+            const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
+
+            let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
+            let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
+
+            // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
+            if (!validLatitudePattern.test(formattedLatitude)) {
+                formattedLatitude = latitude;
+            }
+
+            if (!validLongitudePattern.test(formattedLongitude)) {
+                formattedLongitude = longitude;
+            }
 
             return {
-                formattedLatitude: numericLatitude.toFixed(8),
-                formattedLongitude: numericLongitude.toFixed(8)
+                formattedLatitude,
+                formattedLongitude
             };
         }
-
-        // Jika koordinat perlu diformat
-        const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
-        const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
-
-        let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
-        let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
-
-        // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
-        if (!validLatitudePattern.test(formattedLatitude)) {
-            formattedLatitude = latitude;
-        }
-
-        if (!validLongitudePattern.test(formattedLongitude)) {
-            formattedLongitude = longitude;
-        }
-
-        return {
-            formattedLatitude,
-            formattedLongitude
-        };
-    }
 
         function filterMarkersByKelurahanAndNumber(kelurahan, tpsNumber) {
             filteredMarkers = [];

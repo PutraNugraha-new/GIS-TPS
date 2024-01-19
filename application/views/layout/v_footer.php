@@ -47,7 +47,7 @@
     });
 </script>
 <script>   
-     function formatCoordinates(latitude, longitude) {
+    function formatCoordinates(latitude, longitude) {
         // Pengecekan apakah koordinat sudah dalam format yang benar
         const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
         const validLatitudePattern = /^-?\d+\.\d+$/;
