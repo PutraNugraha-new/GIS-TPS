@@ -73,6 +73,7 @@ class Users extends CI_Controller {
                     'title2'=>'Data Pengguna',
                     'user' => $this->session->userdata['first_name'],
                     'isi'   =>  'admin/users/v_tambah',
+                    'dataLevel' => $dataLevel
                 );
                 // var_dump($data);
                 $this->load->view('admin/layout/v_wrapper', $data, FALSE);
@@ -109,6 +110,7 @@ class Users extends CI_Controller {
                 'title'=>'Sistem Informasi ...',
                 'title2'=>'Data Pengguna',
                 'user' => $this->session->userdata['first_name'],
+                'dataLevel' => $dataLevel,
                 'isi'   =>  'admin/users/v_tambah',
             );
             // var_dump($data);
@@ -198,6 +200,7 @@ public function banuser()
                 'title'=>'Sistem Informasi ...',
                 'title2'=>'Data Pengguna',
                 'user' => $this->session->userdata['first_name'],
+                'dataLevel' => $dataLevel,
                 'isi'   =>  'users',
             );
             // var_dump($data);

@@ -195,6 +195,6 @@
                 ]
             },
         });
-        control.addTo(map);
+        // control.addTo(map);
         
 </script>

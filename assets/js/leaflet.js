@@ -1,5 +1,5 @@
 var latLng = [-1.5333, 113.7500];
-var map = L.map('map').setView(latLng, 17);
+var map = L.map('map').setView(latLng, 10);
 var marker;
 layer  = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

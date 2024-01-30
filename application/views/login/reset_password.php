@@ -50,18 +50,8 @@
         </div>
         <div class="form-login">
             <?php $fattr = array('class' => 'form-signin');
-                echo form_open(site_url().'main/login/', $fattr); 
+                echo form_open(site_url().'main/reset_password/token/'.$token, $fattr);
             ?>
-            <div class="form-group">
-                <?php echo form_input(array(
-                    'name'=>'email', 
-                    'id'=> 'email', 
-                    'placeholder'=>'Email', 
-                    'class'=>'form-control mx-auto', 
-                    'placeholder'=>'Email', 
-                    'value'=> set_value('email'))); ?>
-                <?php echo form_error('email', '<div class="alert alert-danger" role="alert">', '</div>') ?>
-            </div>
             <div class="form-group">
                 <?php echo form_password(array(
                     'name'=>'password', 
@@ -72,16 +62,14 @@
                     'value'=> set_value('password'))); ?>
                 <?php echo form_error('password', '<div class="alert alert-danger" role="alert">', '</div>') ?>
             </div>
+            <div class="form-group">
+                <?php echo form_password(array(
+                    'name'=>'passconf', 'id'=> 'passconf', 'placeholder'=>'Confirm Password', 'class'=>'form-control', 'value'=> set_value('passconf'))); ?>
+                <?php echo form_error('password', '<div class="alert alert-danger" role="alert">', '</div>') ?>
+            </div>
             <?php 
                 echo form_submit(array('value'=>'Login', 'class'=>'btn btn-danger mx-auto btn-block')); ?>
             <?php echo form_close(); ?>
-        </div>
-        <div class="d-flex justify-content-between">
-            <a href="<?= base_url('') ?>">Back to Website</a>
-            <p>
-                Lupa Password ?
-                <a href="<?= base_url() ?>main/forgot">Klik Disini</a>
-            </p>
         </div>
         <hr>
         <div class="footer">
