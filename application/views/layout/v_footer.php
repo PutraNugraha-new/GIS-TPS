@@ -316,12 +316,19 @@
 
         filterMarkersByKelurahanAndNumber(selectedKelurahan, tpsNumber);
 
-        // Lakukan zoom ke lokasi marker yang cocok jika ada
+       // Lakukan zoom ke lokasi marker yang cocok jika ada
         if (filteredMarkers.length > 0) {
             var bounds = new L.LatLngBounds(filteredMarkers.map(function(marker) {
                 return marker.getLatLng();
             }));
-            map.fitBounds(bounds);
+            
+            // Atur opsi zoom maksimum di sini
+            var options = {
+                maxZoom: 17 // Sesuaikan dengan level zoom yang Anda inginkan
+            };
+        
+            // Fit bounds dengan opsi zoom maksimum
+            map.fitBounds(bounds, options);
         }
     }
 

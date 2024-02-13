@@ -95,32 +95,24 @@
     </div>
 </div>
 <script>
+    // Fungsi format koordinat
     function formatCoordinates(latitude, longitude) {
-        // Pengecekan apakah koordinat sudah dalam format yang benar
-        const coordinatePattern = /^(-?\d+\.\d+)([NS]),\s*(-?\d+\.\d+)([EW])$/;
         const validLatitudePattern = /^-?\d+\.\d+$/;
         const validLongitudePattern = /^-?\d+\.\d+$/;
 
-        const coordinateMatch = `${latitude},${longitude}`.match(coordinatePattern);
-
-        if (coordinateMatch) {
-            const numericLatitude = coordinateMatch[1] * (coordinateMatch[2] === 'S' ? -1 : 1);
-            const numericLongitude = coordinateMatch[3] * (coordinateMatch[4] === 'W' ? -1 : 1);
-
+        if (validLatitudePattern.test(latitude) && validLongitudePattern.test(longitude)) {
             return {
-                formattedLatitude: numericLatitude.toFixed(8),
-                formattedLongitude: numericLongitude.toFixed(8)
+                formattedLatitude: latitude,
+                formattedLongitude: longitude
             };
         }
 
-        // Jika koordinat perlu diformat
         const cleanLatitude = latitude.replace(/[^0-9.-]/g, '');
         const cleanLongitude = longitude.replace(/[^0-9.-]/g, '');
 
         let formattedLatitude = `${cleanLatitude.charAt(0) === '-' ? '-' : ''}${cleanLatitude.charAt(1)}.${cleanLatitude.slice(2, 9)}`;
         let formattedLongitude = `${cleanLongitude.charAt(0)}${cleanLongitude.charAt(1)}${cleanLongitude.charAt(2)}.${cleanLongitude.slice(3)}`;
 
-        // Tambahan: Perbaikan jika hanya salah satu koordinat yang valid
         if (!validLatitudePattern.test(formattedLatitude)) {
             formattedLatitude = latitude;
         }
@@ -134,23 +126,43 @@
             formattedLongitude
         };
     }
-        var lat = document.getElementById("lat").value;
-        var long = document.getElementById("long").value;
-        var formattedCoordinates = formatCoordinates(lat, long);
-        var formattedLatitude = parseFloat(formattedCoordinates.formattedLatitude); // Konversi ke angka
-        var formattedLongitude = parseFloat(formattedCoordinates.formattedLongitude);
 
-        var latlong = [lat,long];
-        var mapp = L.map('edit-map').setView([formattedLatitude, formattedLongitude], 15);
-                layer  = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    attributionControl: false
-                }).addTo(mapp);
+    // Mendapatkan nilai input latitude dan longitude
+    var latInput = document.getElementById("lat");
+    var lngInput = document.getElementById("long");
 
-                L.marker([formattedLatitude, formattedLongitude]).addTo(mapp)
-        
-        console.log(formattedLatitude);
-        console.log(formattedLongitude);
+    // Mendapatkan nilai latitude dan longitude dari input
+    var lat = latInput.value;
+    var long = lngInput.value;
+    var formattedCoordinates = formatCoordinates(lat, long);
+    var formattedLatitude = parseFloat(formattedCoordinates.formattedLatitude);
+    var formattedLongitude = parseFloat(formattedCoordinates.formattedLongitude);
+
+    // Inisialisasi peta pada div dengan id "edit-map"
+    var mapp = L.map('edit-map').setView([formattedLatitude, formattedLongitude], 15);
+    var layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attributionControl: false
+    }).addTo(mapp);
+
+    // Menambahkan marker awal ke peta
+    var marker = L.marker([formattedLatitude, formattedLongitude]).addTo(mapp);
+
+    // Event listener untuk menangkap klik pada peta
+    mapp.on('click', function(e) {
+        var lat = e.latlng.lat; // Dapatkan latitude dari titik yang diklik
+        var lng = e.latlng.lng; // Dapatkan longitude dari titik yang diklik
+
+        // Memperbarui marker pada peta
+        marker.setLatLng(e.latlng);
+
+        // Memperbarui nilai input latitude dan longitude
+        latInput.value = lat;
+        lngInput.value = lng;
+    });
+
+
+    
         // form select kecamatan
         $("#edit_kabupaten").change(function() {
                 var id_kabupaten = $(this).val();
