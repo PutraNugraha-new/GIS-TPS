@@ -194,6 +194,7 @@ public function banuser()
 	    if($dataLevel == "is_admin"){
 
             $this->form_validation->set_rules('email', 'Your Email', 'required');
+            $this->form_validation->set_rules('first_name', 'Your first_name', 'required');
             $this->form_validation->set_rules('banuser', 'Ban or Unban', 'required');
 
             $data = array(
@@ -210,6 +211,7 @@ public function banuser()
                 $post = $this->input->post(NULL, TRUE);
                 $cleanPost = $this->security->xss_clean($post);
                 $cleanPost['email'] = $this->input->post('email');
+                $cleanPost['first_name'] = $this->input->post('first_name');
                 $cleanPost['banuser'] = $this->input->post('banuser');
                 if(!$this->user_model->updateUserban($cleanPost)){
                     $this->session->set_flashdata('flash_message', 'There was a problem updating');
@@ -223,7 +225,48 @@ public function banuser()
 	    }
 	}
 
+    public function update(){
+        $data = $this->session->userdata;
+        if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
 
+        //check user level
+	    if(empty($data['role'])){
+	        redirect(site_url().'main/login/');
+	    }
+	    $dataLevel = $this->userlevel->checkLevel($data['role']);
+	    //check user level
+
+	    //check is admin or not
+	    if($dataLevel == "is_admin"){
+            $this->form_validation->set_rules('id', 'ID', 'required');
+            $this->form_validation->set_rules('email', 'email', 'required');
+            $this->form_validation->set_rules('role', 'Role', 'required');
+            $this->form_validation->set_rules('first_name', 'Nama Pengguna', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                
+                redirect('users','refresh');
+                
+                // die();
+            }else{
+                $post = $this->input->post(NULL, TRUE);
+                $cleanPost = $this->security->xss_clean($post);
+                $cleanPost['id'] = $this->input->post('id');
+                $cleanPost['email'] = $this->input->post('email');
+                $cleanPost['first_name'] = $this->input->post('first_name');
+                $cleanPost['banned_users'] = $this->input->post('banned_users');
+
+                    //update to database
+                    $this->user_model->edit($cleanPost);
+                    $this->session->set_flashdata('success_message', 'Berhasil Edit Data.');
+                    redirect(site_url().'users');
+            }
+	    }else{
+	        redirect(site_url().'main/');
+	    }
+    }
 
 }
 

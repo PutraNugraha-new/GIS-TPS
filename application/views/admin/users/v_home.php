@@ -74,14 +74,33 @@
       </div>
       <div class="modal-body">
       <?php $fattr = array('class' => 'form-signin');
-         echo form_open(site_url().'main/banuser/', $fattr); ?>
+         echo form_open(site_url().'users/update/', $fattr); ?>
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <input type="text" id="email" class="form-control" name="email" readonly required >
+                                    <input type="hidden" id="id" class="form-control" name="id" readonly required >
+                                    <input type="text" id="email" class="form-control" name="email" required >
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Nama Lengkap</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                    <input type="text" id="first_name" class="form-control" name="first_name" required >
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label>Role</label>
+                                </div>
+                                <div class="col-md-8 form-group">
+                                <select name="role" id="role" class="form-control">
+                                    <option value="1">Admin</option>
+                                    <option value="2">Operator</option>
+                                </select>
+                                <?php echo form_error('status');?>
                                 </div>
                                 
                                 <div class="col-md-4">
@@ -93,7 +112,7 @@
                                             'unban'   => 'Unban',
                                             'ban'   => 'Ban',
                                             );
-                                    $dd_name = "banuser";
+                                    $dd_name = "banned_users";
                                     echo form_dropdown($dd_name, $dd_list, set_value($dd_name),'class = "form-control" id="banuser"');
                                 ?>
                                 </div>
@@ -114,8 +133,8 @@
     $(document).ready(function() {
         $('.tampilModalUbah').on('click', function() {
             const id = $(this).data('id');
-            $('#exampleModalLabel').html('Ubah Status keaktifan Akun');
-            $('.modal-body form').attr('action', 'Users/banuser/');
+            $('#exampleModalLabel').html('Ubah Akun');
+            $('.modal-body form').attr('action', 'users/update/');
             
 
             $.ajax({
@@ -124,7 +143,10 @@
                 method: 'post',
                 dataType:'json',
                 success:function(data){
+                    $('#id').val(data.id);
                     $('#email').val(data.email);
+                    $('#role').val(data.role);
+                    $('#first_name').val(data.first_name);
                     $('#banuser').val(data.banned_users);
                 }
             });

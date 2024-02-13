@@ -81,18 +81,18 @@ class SendMail{
         $message = '';
         $message .= 'Hello, ' .$ls.'<br>';
         $message .= '<br>';
-        $message .= 'We\'ve generated a new password for you at your<br>';
-        $message .= 'request, you can use this new password with your username:<br>';
+        $message .= 'Kami telah membuat kata sandi baru untuk Anda di<br>';
+        $message .= 'permintaan, Anda dapat menggunakan kata sandi baru ini dengan nama pengguna Anda:<br>';
         $message .= '<br>';
         $message .= '<strong>Username : '.$em.'</strong><br>';
         $message .= '<strong>Password : (Forgot Password) </strong><br>';
         $message .= '<br>';
-        $message .= 'To reset your Password please, clicking on this link:';
+        $message .= 'Untuk mengatur ulang Kata Sandi Anda, silakan klik tautan ini:';
         $message .= '<br><br>';
         $message .= $link . '<br>';
         $message .= '<br>';
-        $message .= 'Sincerely yours,<br>';
-        $message .= $tLe;
+        $message .= 'Hormat kami,<br>';
+        $message .= 'Putra Nugraha';
         return $message;
     }
 
