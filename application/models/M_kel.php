@@ -10,6 +10,12 @@ class M_kel extends CI_Model {
         return $this->db->get()->result();
     }
 
+    public function isDuplicate($kode_kel)
+    {     
+        $this->db->get_where('kelurahan', array('kode_kel' => $kode_kel), 1);
+        return $this->db->affected_rows() > 0 ? TRUE : FALSE;         
+    }
+
     public function add($data){
         $this->db->insert('kelurahan', $data);
     }

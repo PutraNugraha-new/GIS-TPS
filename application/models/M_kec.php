@@ -10,6 +10,12 @@ class M_kec extends CI_Model {
         return $this->db->get()->result();
     }
 
+    public function isDuplicate($kode_kec)
+    {     
+        $this->db->get_where('kecamatan', array('kode_kec' => $kode_kec), 1);
+        return $this->db->affected_rows() > 0 ? TRUE : FALSE;         
+    }
+
     public function add($data){
         $this->db->insert('kecamatan', $data);
     }

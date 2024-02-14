@@ -77,7 +77,11 @@ class Kecamatan extends CI_Controller {
     }
 
     public function add()
-	{
+	{   
+        if($this->M_kec->isDuplicate($this->input->post('kode_kec'))){
+            $this->session->set_flashdata('flash_message', 'Kode Kecamatan sudah ada');
+            redirect(site_url().'Kecamatan');
+        }else{
             $i = $this->input;
             $data = array(
                 'kode_kec'	=> $i->post('kode_kec'),
@@ -95,7 +99,8 @@ class Kecamatan extends CI_Controller {
                 'isi'   =>  'admin/kecamatan/v_home',
                 'dataLevel' => $dataLevel
             );
-		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
 	}
 
     //Delete one item

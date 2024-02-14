@@ -9,6 +9,11 @@ class M_kab extends CI_Model {
         $this->db->from('kabupaten');
         return $this->db->get()->result();
     }
+    public function isDuplicate($kode_kab)
+    {     
+        $this->db->get_where('kabupaten', array('kode_kab' => $kode_kab), 1);
+        return $this->db->affected_rows() > 0 ? TRUE : FALSE;         
+    }
 
 	//add
     public function add($data)

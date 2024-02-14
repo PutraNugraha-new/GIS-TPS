@@ -84,6 +84,10 @@ class Kelurahan extends CI_Controller {
 
     public function add()
 	{
+        if($this->M_kel->isDuplicate($this->input->post('kode_kel'))){
+            $this->session->set_flashdata('flash_message', 'Kode Kelurahan sudah ada');
+            redirect(site_url().'kelurahan');
+        }else{
             $i = $this->input;
             $data = array(
                 'kode_kel'	=> $i->post('kode_kel'),
@@ -101,7 +105,8 @@ class Kelurahan extends CI_Controller {
                 'isi'   =>  'admin/kelurahan/v_home',
                 'dataLevel' => $dataLevel
             );
-		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
 	}
 
     //Delete one item

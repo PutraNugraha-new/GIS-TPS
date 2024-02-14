@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <input type="hidden" id="id" class="form-control" name="id" readonly required >
-                                    <input type="text" id="email" class="form-control" name="email" required >
+                                    <input type="email" id="email" class="form-control" name="email" required >
                                 </div>
 
                                 <div class="col-md-4">

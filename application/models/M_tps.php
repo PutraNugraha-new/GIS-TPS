@@ -30,6 +30,15 @@ class M_tps extends CI_Model {
         return $query->result();
     }
     
+    public function isDuplicate($kode_kab, $kode_kec, $kode_kel, $nama_tps)
+    {     
+        $this->db->where('kode_kab', $kode_kab);
+        $this->db->where('kode_kec', $kode_kec);
+        $this->db->where('kode_kel', $kode_kel);
+        $this->db->where('nama_tps', $nama_tps);
+        $query = $this->db->get('data_tps'); // Ganti 'nama_tabel' dengan nama tabel yang sesuai
+        return $query->num_rows() > 0 ? TRUE : FALSE;         
+    }
 
 	//add
     public function add($data)

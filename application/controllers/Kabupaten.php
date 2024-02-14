@@ -92,7 +92,11 @@ class Kabupaten extends CI_Controller {
     }
 
     public function add()
-	{
+	{   
+        if($this->M_kab->isDuplicate($this->input->post('kode_kab'))){
+            $this->session->set_flashdata('flash_message', 'Kode Kabupaten sudah ada');
+            redirect(site_url().'kabupaten');
+        }else{
             $i = $this->input;
             $data = array(
                 'kode_kab'	=> $i->post('kode_kab'),
@@ -109,7 +113,8 @@ class Kabupaten extends CI_Controller {
                 'isi'   =>  'admin/kabupaten/v_home',
                 'dataLevel' => $dataLevel
             );
-		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
 	}
 
     //Delete one item

@@ -150,6 +150,15 @@ class Admin extends CI_Controller {
     }
 
     public function update($id){
+        $id = $this->input->post('id_tps');
+        $kab = $this->input->post('kode_kab');
+        $kec = $this->input->post('kode_kec');
+        $kel = $this->input->post('kode_kel');
+        $tps = $this->input->post('nama_tps');
+        if($this->M_tps->isDuplicate($kab,$kec,$kel, $tps)){
+            $this->session->set_flashdata('flash_message', 'Nomor TPS pada wilayah tersebut sudah ada');
+            redirect(site_url().'admin/edit/'.$id,'refresh');
+        }else{
         $i = $this->input;
             $data = array(
                 'id_tps'	=> $id,
@@ -174,7 +183,8 @@ class Admin extends CI_Controller {
                 'isi'   =>  'admin/gis/v_home',
                 'dataLevel' => $dataLevel
             );
-		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
     }
 
     public function get_kecamatan_by_kabupaten($id_kabupaten) {
@@ -189,6 +199,14 @@ class Admin extends CI_Controller {
 
     public function add()
 	{
+        $kab = $this->input->post('kode_kab');
+        $kec = $this->input->post('kode_kec');
+        $kel = $this->input->post('kode_kel');
+        $tps = $this->input->post('nama_tps');
+        if($this->M_tps->isDuplicate($kab,$kec,$kel, $tps)){
+            $this->session->set_flashdata('flash_message', 'Nomor TPS pada wilayah tersebut sudah ada');
+            redirect(site_url().'admin/tambah');
+        }else{
             $i = $this->input;
             $data = array(
                 'kode_kab'	=> $i->post('kode_kab'),
@@ -210,7 +228,8 @@ class Admin extends CI_Controller {
                 'isi'   =>  'admin/gis/v_home',
                 'dataLevel' => $dataLevel
             );
-		$this->load->view('admin/layout/v_wrapper', $data, FALSE);
+            $this->load->view('admin/layout/v_wrapper', $data, FALSE);
+        }
 	}
 
     //Delete one item

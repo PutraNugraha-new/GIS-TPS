@@ -3,6 +3,11 @@
         <?= $this->session->flashdata('sukses'); ?>
     </div>
 <?php endif; ?>
+<?php if ($this->session->flashdata('flash_message')): ?>
+    <div class="alert alert-success">
+        <?= $this->session->flashdata('flash_message'); ?>
+    </div>
+<?php endif; ?>
 <div class="card">
     <div class="card-body">
     <div class="row">

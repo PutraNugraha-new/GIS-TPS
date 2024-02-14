@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <?php echo form_input(array('name'=>'firstname', 'id'=> 'firstname', 'placeholder'=>'First Name', 'class'=>'form-control', 'value' => set_value('firstname'))); ?>
-                                    <?php echo form_error('firstname');?>
+                                    <span class="text-danger"><?php echo form_error('firstname');?></span>
                                 </div>
                                 
                                 <div class="col-md-4">
@@ -52,29 +52,29 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <?php echo form_input(array('name'=>'lastname', 'id'=> 'lastname', 'placeholder'=>'Last Name', 'class'=>'form-control', 'value'=> set_value('lastname'))); ?>
-                                    <?php echo form_error('lastname');?>
+                                    <span class="text-danger"><?php echo form_error('lastname');?></span>
                                 </div>
                                 
                                 <div class="col-md-4">
                                     <label>Email</label>
                                 </div>
                                 <div class="col-md-8 form-group">
-                                    <?php echo form_input(array('name'=>'email', 'id'=> 'email', 'placeholder'=>'Email', 'class'=>'form-control', 'value'=> set_value('email'))); ?>
-                                    <?php echo form_error('email');?>
+                                    <?php echo form_input(array('name'=>'email','type' => 'email', 'id'=> 'email', 'placeholder'=>'Email', 'class'=>'form-control', 'value'=> set_value('email'))); ?>
+                                    <span class="text-danger"><?php echo form_error('email');?></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Password</label>
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <?php echo form_password(array('name'=>'password', 'id'=> 'password', 'placeholder'=>'Password', 'class'=>'form-control', 'value' => set_value('password'))); ?>
-                                    <?php echo form_error('password') ?>
+                                    <span class="text-danger"><?php echo form_error('password');?></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label>Konfirmasi Password</label>
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <?php echo form_password(array('name'=>'passconf', 'id'=> 'passconf', 'placeholder'=>'Confirm Password', 'class'=>'form-control', 'value'=> set_value('passconf'))); ?>
-                                    <?php echo form_error('passconf') ?>
+                                    <span class="text-danger"><?php echo form_error('passconf');?></span>
                                 </div>
                                 
                                 <div class="col-md-4">

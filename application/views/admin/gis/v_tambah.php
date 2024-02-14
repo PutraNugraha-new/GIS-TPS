@@ -1,3 +1,8 @@
+<?php if ($this->session->flashdata('flash_message')): ?>
+    <div class="alert alert-danger">
+        <?= $this->session->flashdata('flash_message'); ?>
+    </div>
+<?php endif; ?>
 <div class="row">
     <div class="col-md-6">
         <div class="card">
